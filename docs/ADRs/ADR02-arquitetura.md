@@ -253,7 +253,7 @@ JSON local
 Exemplo:
 
 ```text
-src/data/
+data/
 ├── prayers/
 └── novenas/
 ```

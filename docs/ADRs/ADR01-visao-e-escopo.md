@@ -163,8 +163,8 @@ Durante o desenvolvimento inicial, o conteúdo será mantido localmente.
 Exemplo conceitual:
 
 ```text
-src/data/
-├── oracoes/
+data/
+├── prayers/
 │   ├── ave-maria.json
 │   ├── pai-nosso.json
 │   └── ...

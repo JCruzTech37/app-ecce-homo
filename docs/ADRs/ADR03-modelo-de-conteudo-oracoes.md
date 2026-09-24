@@ -464,13 +464,12 @@ A estratégia exata de validação — somente TypeScript, schema validation ou 
 A estrutura inicial prevista para o conteúdo é:
 
 ```text
-src/
-└── data/
-    └── prayers/
-        ├── ave-maria.json
-        ├── salve-rainha.json
-        ├── pai-nosso.json
-        └── ...
+data/
+└── prayers/
+    ├── ave-maria.json
+    ├── salve-rainha.json
+    ├── pai-nosso.json
+    └── ...
 ```
 
 Cada oração será um arquivo JSON independente.
