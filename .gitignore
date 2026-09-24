@@ -33,6 +33,19 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Firebase — cache, logs e credenciais locais
+# firebase.json, firestore.rules e firestore.indexes.json permanecem versionados
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+database-debug.log
+*-firebase-adminsdk-*.json
+*service-account*.json
+*serviceAccount*.json
+
 # vercel
 .vercel
 
@@ -41,3 +54,4 @@ yarn-error.log*
 next-env.d.ts
 
 prompt.md
+data/
