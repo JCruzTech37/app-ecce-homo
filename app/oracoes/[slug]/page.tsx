@@ -10,6 +10,7 @@ import {
   categoriasSugeridas,
 } from "@/domain/categoriasOracoes";
 import { listarOracoesPublicadas, obterOracaoPorSlug } from "@/domain/oracoes";
+import { categoriaDestaque, nomeCategoriaDestaque } from "@/domain/destaques";
 import { oracoesRelacionadas } from "@/domain/oracoesRelacionadas";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 import { Rodape } from "@/components/Rodape";
@@ -48,6 +49,10 @@ function ordenacaoSolicitada(valor: string | string[] | undefined): string {
 }
 
 function nomeCategoria(tag: string): string {
+  if (tag === categoriaDestaque) {
+    return nomeCategoriaDestaque;
+  }
+
   return tag
     .split("-")
     .map((parte) => {
@@ -86,13 +91,17 @@ export default async function PaginaOracao(
   }
 
   const publicadas = await listarOracoesPublicadas();
-  const categorias = categoriasPorQuantidade(publicadas);
+  const categorias = categoriasPorQuantidade(publicadas).filter(
+    (item) => item.slug !== categoriaDestaque,
+  );
   const ordem = ordenacaoSolicitada(ordemInformada);
   const busca = (textoParametro(buscaInformada) ?? "").trim().slice(0, 50);
   const categoriaSolicitada = (textoParametro(categoriaInformada) ?? "").trim();
-  const categoria = categorias.some((item) => item.slug === categoriaSolicitada)
-    ? categoriaSolicitada
-    : "";
+  const categoria =
+    categoriaSolicitada === categoriaDestaque ||
+    categorias.some((item) => item.slug === categoriaSolicitada)
+      ? categoriaSolicitada
+      : "";
   const sugestoes = categoriasSugeridas(oracao.tags, categorias);
   const relacionadas = oracoesRelacionadas(oracao, publicadas).map((item) => ({
     slug: item.slug,
@@ -249,7 +258,11 @@ export default async function PaginaOracao(
                       <Link
                         key={`${tag}-${indice}`}
                         href={hrefOracoes({ categoria: tag })}
-                        className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                        className={`badge rounded-pill text-decoration-none fw-normal ${
+                          tag === categoriaDestaque
+                            ? "text-bg-warning"
+                            : "text-bg-primary"
+                        }`}
                       >
                         {nomeCategoria(tag)}
                       </Link>

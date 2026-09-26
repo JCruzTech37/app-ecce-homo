@@ -10,10 +10,7 @@ function texto(valor: unknown): valor is string {
   return typeof valor === "string";
 }
 
-function textoOpcional(
-  valor: unknown,
-  campo: string,
-): string | undefined {
+function textoOpcional(valor: unknown, campo: string): string | undefined {
   if (valor === undefined) {
     return undefined;
   }
@@ -77,6 +74,7 @@ function interpretarOracao(valor: unknown): Oracao {
     fraseSanto: textoOpcional(valor.fraseSanto, "fraseSanto"),
     fraseSantoAutor: textoOpcional(valor.fraseSantoAutor, "fraseSantoAutor"),
     tags: valor.tags,
+    isDestaque: valor.is_destaque === true,
     publicado: valor.publicado,
     createdAt: dataTexto(valor.createdAt, "createdAt"),
     updatedAt: dataTexto(valor.updatedAt, "updatedAt"),

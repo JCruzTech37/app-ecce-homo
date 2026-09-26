@@ -1,8 +1,28 @@
 import Link from "next/link";
+import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { Rodape } from "@/components/Rodape";
+import { categoriaDestaque } from "@/domain/destaques";
+import {
+  listarOracoesEmDestaque,
+  listarOracoesRecentes,
+} from "@/domain/oracoes";
+import { hrefOracoes } from "@/lib/hrefOracoes";
 
-export default function Home() {
+export default async function Home() {
+  const paraCarrossel = (
+    oracoes: Awaited<ReturnType<typeof listarOracoesRecentes>>,
+  ) =>
+    oracoes.map((oracao) => ({
+      slug: oracao.slug,
+      titulo: oracao.titulo,
+      descricao: oracao.descricao,
+      imagemVertical: oracao.imagemVertical,
+      textoAlternativo: oracao.textoAlternativo,
+      tags: oracao.tags,
+    }));
+  const destaques = paraCarrossel(await listarOracoesEmDestaque());
+  const recentes = paraCarrossel(await listarOracoesRecentes());
   return (
     <>
       <header className="border-bottom bg-white">
@@ -86,86 +106,17 @@ export default function Home() {
             >
               Orações em destaque
             </h2>
-            <Link href="/oracoes" className="btn btn-outline-primary btn-sm">
+            <Link
+              href={hrefOracoes({ categoria: categoriaDestaque })}
+              className="btn btn-outline-primary btn-sm"
+            >
               Ver todas
             </Link>
           </div>
-
-          {/* !!! ESTÁTICO — futuramente virá do domínio de orações em destaque !!! */}
-          <div className="row g-4">
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Ave-Maria</h3>
-                  <p className="card-text small">
-                    A oração que nos une a Maria.
-                  </p>
-                  <p className="small text-primary mb-3">Orações Marianas</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Consagração a Jesus</h3>
-                  <p className="card-text small">Entregue sua vida a Cristo.</p>
-                  <p className="small text-primary mb-3">Orações a Jesus</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Oração a São José</h3>
-                  <p className="card-text small">
-                    Peça a intercessão do pai adotivo de Jesus.
-                  </p>
-                  <p className="small text-primary mb-3">Orações aos Santos</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">
-                    Oração a Nossa Senhora Aparecida
-                  </h3>
-                  <p className="card-text small">
-                    Confie suas intenções à Mãe do Brasil.
-                  </p>
-                  <p className="small text-primary mb-3">Orações Marianas</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-          </div>
+          <CarrosselOracoesRelacionadas
+            oracoes={destaques}
+            rotuloNavegacao="Páginas de orações em destaque"
+          />
         </section>
 
         <section className="container pb-5" aria-labelledby="recentes-titulo">
@@ -180,80 +131,10 @@ export default function Home() {
               Ver todas
             </Link>
           </div>
-
-          {/* !!! ESTÁTICO — futuramente virá do domínio de orações recentes !!! */}
-          <div className="row g-4">
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Oração da Manhã</h3>
-                  <p className="card-text small">Comece o dia com Deus.</p>
-                  <p className="small text-primary mb-3">Orações Diversas</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Oração da Noite</h3>
-                  <p className="card-text small">Entregue seu dia ao Senhor.</p>
-                  <p className="small text-primary mb-3">Orações Diversas</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Vinde Espírito Santo</h3>
-                  <p className="card-text small">
-                    Peça os dons do Espírito Santo.
-                  </p>
-                  <p className="small text-primary mb-3">
-                    Orações ao Espírito Santo
-                  </p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <div
-                  className="ratio ratio-1x1 bg-secondary-subtle"
-                  aria-hidden="true"
-                />
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">Oração do Terço</h3>
-                  <p className="card-text small">
-                    Medite os mistérios do Rosário.
-                  </p>
-                  <p className="small text-primary mb-3">Orações Marianas</p>
-                  <a href="#" className="mt-auto">
-                    Ler oração
-                  </a>
-                </div>
-              </article>
-            </div>
-          </div>
+          <CarrosselOracoesRelacionadas
+            oracoes={recentes}
+            rotuloNavegacao="Páginas de orações mais recentes"
+          />
         </section>
 
         <section

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BadgeCategoria } from "@/components/BadgeCategoria";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import styles from "./oracoes.module.css";
 import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
 import { PainelFiltrosOracoes } from "@/components/PainelFiltrosOracoes";
 import { categoriasPorQuantidade } from "@/domain/categoriasOracoes";
+import { categoriaDestaque, ehDestaque } from "@/domain/destaques";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
 import { hrefOracao, hrefOracoes } from "@/lib/hrefOracoes";
 import type { Oracao } from "@/types/oracao";
@@ -171,14 +173,27 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
   const ordem = ordenacaoSolicitada(ordemInformada);
   const busca = (textoParametro(buscaInformada) ?? "").trim().slice(0, 50);
   const publicadas = await listarOracoesPublicadas();
-  const categorias = categoriasPorQuantidade(publicadas);
-  const categoriaSolicitada = (textoParametro(categoriaInformada) ?? "").trim();
-  const categoria = categorias.some((item) => item.slug === categoriaSolicitada)
-    ? categoriaSolicitada
-    : "";
-  const encontradas = filtrarPorTitulo(publicadas, busca).filter((oracao) =>
-    categoria ? oracao.tags.includes(categoria) : true,
+  const categorias = categoriasPorQuantidade(publicadas).filter(
+    (item) => item.slug !== categoriaDestaque,
   );
+  const quantidadeDestaques = publicadas.filter(ehDestaque).length;
+  const categoriaSolicitada = (textoParametro(categoriaInformada) ?? "").trim();
+  const categoria =
+    categoriaSolicitada === categoriaDestaque ||
+    categorias.some((item) => item.slug === categoriaSolicitada)
+      ? categoriaSolicitada
+      : "";
+  const encontradas = filtrarPorTitulo(publicadas, busca).filter((oracao) => {
+    if (!categoria) {
+      return true;
+    }
+
+    if (categoria === categoriaDestaque) {
+      return ehDestaque(oracao);
+    }
+
+    return oracao.tags.includes(categoria);
+  });
   const oracoes = ordenarBusca(encontradas, busca, ordem);
   const totalPaginas = Math.ceil(oracoes.length / tamanhoPagina);
   const pagina = paginaSolicitada(paginaInformada, totalPaginas);
@@ -280,6 +295,7 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                 categoria={categoria}
                 total={publicadas.length}
                 categorias={categorias}
+                quantidadeDestaques={quantidadeDestaques}
                 quantidadeResultados={oracoes.length}
               />
             </aside>
@@ -357,13 +373,11 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                               </p>
                             ) : null}
                             <p className="d-flex flex-wrap gap-1 mb-3">
-                              {oracao.tags.slice(0, 4).map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="badge rounded-pill text-bg-primary fw-normal"
-                                >
-                                  {tag}
-                                </span>
+                              {oracao.tags.slice(0, 4).map((tag, indice) => (
+                                <BadgeCategoria
+                                  key={`${tag}-${indice}`}
+                                  tag={tag}
+                                />
                               ))}
                             </p>
                             <Link href={destino} className="mt-auto">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "@/app/oracoes/oracoes.module.css";
+import { BadgeCategoria } from "@/components/BadgeCategoria";
 import { hrefOracao } from "@/lib/hrefOracoes";
 
 const cardsPorPagina = 4;
@@ -30,11 +31,13 @@ export function CarrosselOracoesRelacionadas({
   busca,
   ordem,
   categoria,
+  rotuloNavegacao = "Páginas de orações relacionadas",
 }: {
   oracoes: OracaoDoCarrossel[];
   busca?: string;
   ordem?: string;
   categoria?: string;
+  rotuloNavegacao?: string;
 }) {
   const [pagina, setPagina] = useState(0);
   const totalPaginas = Math.ceil(oracoes.length / cardsPorPagina);
@@ -76,12 +79,7 @@ export function CarrosselOracoesRelacionadas({
                   ) : null}
                   <p className="d-flex flex-wrap gap-1 mb-3">
                     {oracao.tags.slice(0, 4).map((tag, indice) => (
-                      <span
-                        key={`${tag}-${indice}`}
-                        className="badge rounded-pill text-bg-primary fw-normal"
-                      >
-                        {tag}
-                      </span>
+                      <BadgeCategoria key={`${tag}-${indice}`} tag={tag} />
                     ))}
                   </p>
                   <Link href={destino} className="mt-auto">
@@ -95,7 +93,7 @@ export function CarrosselOracoesRelacionadas({
       </div>
       {totalPaginas > 1 ? (
         <nav
-          aria-label="Páginas de orações relacionadas"
+          aria-label={rotuloNavegacao}
           className="d-flex justify-content-center align-items-center gap-3 mt-4"
         >
           <button

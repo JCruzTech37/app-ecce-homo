@@ -76,6 +76,7 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
       ? valor.fraseSantoAutor
       : undefined,
     tags: valor.tags,
+    isDestaque: valor.is_destaque === true,
     publicado: valor.publicado,
     createdAt: valor.createdAt,
     updatedAt: valor.updatedAt,

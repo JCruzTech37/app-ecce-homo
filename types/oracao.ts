@@ -10,6 +10,7 @@ export type Oracao = {
   fraseSanto?: string;
   fraseSantoAutor?: string;
   tags: string[];
+  isDestaque: boolean;
   publicado: boolean;
   createdAt: string;
   updatedAt: string;

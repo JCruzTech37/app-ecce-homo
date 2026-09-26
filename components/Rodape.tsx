@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LogoRodape } from "@/components/LogoRodape";
 import { categoriasPorQuantidade } from "@/domain/categoriasOracoes";
+import { categoriaDestaque } from "@/domain/destaques";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 
@@ -8,10 +9,9 @@ const limiteCategoriasRodape = 6;
 
 export async function Rodape() {
   const publicadas = await listarOracoesPublicadas();
-  const categorias = categoriasPorQuantidade(publicadas).slice(
-    0,
-    limiteCategoriasRodape,
-  );
+  const categorias = categoriasPorQuantidade(publicadas)
+    .filter((item) => item.slug !== categoriaDestaque)
+    .slice(0, limiteCategoriasRodape);
 
   return (
     <footer className="border-top bg-light">

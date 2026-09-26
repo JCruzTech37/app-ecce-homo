@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLayoutEffect, useRef, useState } from "react";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { categoriaDestaque, nomeCategoriaDestaque } from "@/domain/destaques";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 
 const limiteCategorias = 20;
@@ -14,6 +15,7 @@ export function PainelFiltrosOracoes({
   categoria,
   total,
   categorias,
+  quantidadeDestaques,
   quantidadeResultados,
 }: {
   busca: string;
@@ -21,13 +23,16 @@ export function PainelFiltrosOracoes({
   categoria: string;
   total: number;
   categorias: { slug: string; quantidade: number }[];
+  quantidadeDestaques: number;
   quantidadeResultados: number;
 }) {
   const painelRef = useRef<HTMLDivElement>(null);
   const listaRef = useRef<HTMLUListElement>(null);
   const [expandida, setExpandida] = useState(false);
   const [alturaLista, setAlturaLista] = useState<number | null>(null);
-  const visiveis = expandida ? categorias : categorias.slice(0, limiteCategorias);
+  const visiveis = expandida
+    ? categorias
+    : categorias.slice(0, limiteCategorias);
   const mostrarVerMais = !expandida && categorias.length > limiteCategorias;
 
   useLayoutEffect(() => {
@@ -95,6 +100,34 @@ export function PainelFiltrosOracoes({
               <span className="text-secondary flex-shrink-0">{total}</span>
             </Link>
           </li>
+          <li>
+            <Link
+              href={hrefOracoes({
+                busca,
+                ordem,
+                categoria: categoriaDestaque,
+              })}
+              className={`d-flex justify-content-between text-decoration-none py-2 px-2 border-start border-3 ${
+                categoria === categoriaDestaque
+                  ? "border-primary bg-primary-subtle"
+                  : "border-light text-body"
+              }`}
+              aria-current={
+                categoria === categoriaDestaque ? "true" : undefined
+              }
+            >
+              <span className="text-break me-2 fw-semibold">
+                <i
+                  className="bi bi-star-fill me-1 text-warning"
+                  aria-hidden="true"
+                />
+                {nomeCategoriaDestaque}
+              </span>
+              <span className="text-secondary flex-shrink-0">
+                {quantidadeDestaques}
+              </span>
+            </Link>
+          </li>
         </ul>
         <ul
           ref={listaRef}
@@ -141,10 +174,7 @@ export function PainelFiltrosOracoes({
           href={hrefOracoes({ ordem })}
           className="btn btn-outline-primary w-100 mt-4"
         >
-          <i
-            className="bi bi-arrow-counterclockwise me-2"
-            aria-hidden="true"
-          />
+          <i className="bi bi-arrow-counterclockwise me-2" aria-hidden="true" />
           Limpar filtros
         </Link>
       </div>
