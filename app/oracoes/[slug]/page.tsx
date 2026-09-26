@@ -2,8 +2,17 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
+import { CompartilharOracao } from "@/components/CompartilharOracao";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
-import { obterOracaoPorSlug } from "@/domain/oracoes";
+import {
+  categoriasPorQuantidade,
+  categoriasSugeridas,
+} from "@/domain/categoriasOracoes";
+import { listarOracoesPublicadas, obterOracaoPorSlug } from "@/domain/oracoes";
+import { oracoesRelacionadas } from "@/domain/oracoesRelacionadas";
+import { hrefOracoes } from "@/lib/hrefOracoes";
+import { Rodape } from "@/components/Rodape";
 
 const proporcaoRetrato = {
   "--bs-aspect-ratio": "133.333%",
@@ -17,49 +26,89 @@ function caminhoImagemPublica(referencia: string): string {
   return referencia;
 }
 
-// !!! ESTÁTICO — futuramente virá do domínio/repository !!!
-const relacionadas = [
-  {
-    titulo: "Ave-Maria",
-    descricao: "A oração que nos une a Maria.",
-    tag: "Orações Marianas",
-  },
-  {
-    titulo: "Consagração a Jesus",
-    descricao: "Entregue sua vida a Cristo.",
-    tag: "Orações a Jesus",
-  },
-  {
-    titulo: "Oração a São José",
-    descricao: "Peça a intercessão do pai adotivo de Jesus.",
-    tag: "Orações aos Santos",
-  },
-  {
-    titulo: "Oração a Nossa Senhora Aparecida",
-    descricao: "Confie suas intenções à Mãe do Brasil.",
-    tag: "Orações Marianas",
-  },
-];
+function textoParametro(
+  valor: string | string[] | undefined,
+): string | undefined {
+  return Array.isArray(valor) ? valor[0] : valor;
+}
 
-const categoriasLaterais = [
-  "Todas as Orações",
-  "Orações Marianas",
-  "Orações a Jesus",
-  "Orações ao Espírito Santo",
-  "Orações aos Santos",
-  "Orações da Igreja",
-  "Orações Diversas",
-];
+function ordenacaoSolicitada(valor: string | string[] | undefined): string {
+  const texto = textoParametro(valor);
+
+  if (
+    texto === "antigas" ||
+    texto === "az" ||
+    texto === "za" ||
+    texto === "recentes"
+  ) {
+    return texto;
+  }
+
+  return "recentes";
+}
+
+function nomeCategoria(tag: string): string {
+  return tag
+    .split("-")
+    .map((parte) => {
+      const palavra = parte.toLocaleLowerCase("pt-BR");
+
+      if (palavra === "oracoes") {
+        return "Orações";
+      }
+
+      if (palavra === "oracao") {
+        return "Oração";
+      }
+
+      if (!parte) {
+        return parte;
+      }
+
+      return parte.charAt(0).toLocaleUpperCase("pt-BR") + parte.slice(1);
+    })
+    .join(" ");
+}
 
 export default async function PaginaOracao(
   props: PageProps<"/oracoes/[slug]">,
 ) {
   const { slug } = await props.params;
+  const {
+    busca: buscaInformada,
+    categoria: categoriaInformada,
+    ordem: ordemInformada,
+  } = await props.searchParams;
   const oracao = await obterOracaoPorSlug(slug);
 
   if (!oracao) {
     notFound();
   }
+
+  const publicadas = await listarOracoesPublicadas();
+  const categorias = categoriasPorQuantidade(publicadas);
+  const ordem = ordenacaoSolicitada(ordemInformada);
+  const busca = (textoParametro(buscaInformada) ?? "").trim().slice(0, 50);
+  const categoriaSolicitada = (textoParametro(categoriaInformada) ?? "").trim();
+  const categoria = categorias.some((item) => item.slug === categoriaSolicitada)
+    ? categoriaSolicitada
+    : "";
+  const sugestoes = categoriasSugeridas(oracao.tags, categorias);
+  const relacionadas = oracoesRelacionadas(oracao, publicadas).map((item) => ({
+    slug: item.slug,
+    titulo: item.titulo,
+    descricao: item.descricao,
+    imagemVertical: item.imagemVertical,
+    textoAlternativo: item.textoAlternativo,
+    tags: item.tags,
+  }));
+  const rotuloContexto = categoria
+    ? nomeCategoria(categoria)
+    : busca
+      ? busca
+      : "Todas as Orações";
+  const hrefContexto = hrefOracoes({ busca, ordem, categoria });
+  const hrefTodas = hrefOracoes({ busca, ordem });
 
   return (
     <>
@@ -119,9 +168,9 @@ export default async function PaginaOracao(
                 </Link>
               </li>
               <li className="breadcrumb-item">
-                <a href="#" className="text-decoration-none">
-                  Orações Marianas
-                </a>
+                <Link href={hrefContexto} className="text-decoration-none">
+                  {rotuloContexto}
+                </Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
                 {oracao.titulo}
@@ -135,29 +184,35 @@ export default async function PaginaOracao(
                 <div className="card-body">
                   <h2 className="h6">Orações</h2>
                   <ul className="list-unstyled mb-0">
-                    {categoriasLaterais.map((categoria) => {
-                      const ativa = categoria === "Orações Marianas";
+                    <li>
+                      <Link
+                        href={hrefTodas}
+                        className={`d-block text-decoration-none py-2 px-2 border-start border-3 ${
+                          categoria
+                            ? "border-light"
+                            : "border-primary bg-primary-subtle"
+                        }`}
+                        aria-current={categoria ? undefined : "true"}
+                      >
+                        Todas as Orações
+                      </Link>
+                    </li>
+                    {sugestoes.map((tag) => {
+                      const ativa = tag === categoria;
+
                       return (
-                        <li key={categoria}>
-                          {categoria === "Todas as Orações" ? (
-                            <Link
-                              href="/oracoes"
-                              className="d-block text-decoration-none py-2 px-2 border-start border-3 border-light"
-                            >
-                              {categoria}
-                            </Link>
-                          ) : (
-                            <a
-                              href="#"
-                              className={`d-block text-decoration-none py-2 px-2 border-start border-3 ${
-                                ativa
-                                  ? "border-primary bg-primary-subtle"
-                                  : "border-light"
-                              }`}
-                            >
-                              {categoria}
-                            </a>
-                          )}
+                        <li key={tag}>
+                          <Link
+                            href={hrefOracoes({ busca, ordem, categoria: tag })}
+                            className={`d-block text-decoration-none py-2 px-2 border-start border-3 ${
+                              ativa
+                                ? "border-primary bg-primary-subtle"
+                                : "border-light"
+                            }`}
+                            aria-current={ativa ? "true" : undefined}
+                          >
+                            {nomeCategoria(tag)}
+                          </Link>
                         </li>
                       );
                     })}
@@ -184,44 +239,24 @@ export default async function PaginaOracao(
               <div className="mb-4" style={{ whiteSpace: "pre-line" }}>
                 {oracao.texto}
               </div>
-              {/* !!! ESTÁTICO — compartilhamento sem comportamento !!! */}
               <p className="fw-semibold mb-2">Compartilhar esta oração:</p>
-              <div className="d-flex flex-column flex-sm-row flex-wrap gap-2 mb-4">
-                <button type="button" className="btn btn-success">
-                  <i className="bi bi-whatsapp me-2" aria-hidden="true" />
-                  WhatsApp
-                </button>
-                <button type="button" className="btn btn-outline-secondary">
-                  <i className="bi bi-link-45deg me-2" aria-hidden="true" />
-                  Copiar link
-                </button>
-                <button type="button" className="btn btn-outline-secondary">
-                  <i className="bi bi-share me-2" aria-hidden="true" />
-                  Mais opções
-                </button>
-              </div>
-              <h2 className="h6">Categorias desta oração</h2>
-              {/* !!! ESTÁTICO — tags provisórias !!! */}
-              <p className="d-flex flex-wrap gap-2 mb-0">
-                <a
-                  href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
-                >
-                  Orações Marianas
-                </a>
-                <a
-                  href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
-                >
-                  Nossa Senhora
-                </a>
-                <a
-                  href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
-                >
-                  Orações Tradicionais
-                </a>
-              </p>
+              <CompartilharOracao titulo={oracao.titulo} texto={oracao.texto} />
+              {oracao.tags.length > 0 ? (
+                <>
+                  <h2 className="h6">Categorias desta oração</h2>
+                  <p className="d-flex flex-wrap gap-2 mb-0">
+                    {oracao.tags.map((tag, indice) => (
+                      <Link
+                        key={`${tag}-${indice}`}
+                        href={hrefOracoes({ categoria: tag })}
+                        className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                      >
+                        {nomeCategoria(tag)}
+                      </Link>
+                    ))}
+                  </p>
+                </>
+              ) : null}
             </article>
 
             <div className="col-12 col-lg-3 order-2 order-lg-3">
@@ -261,125 +296,16 @@ export default async function PaginaOracao(
               Ver todas as orações
             </Link>
           </div>
-          {/* !!! ESTÁTICO — relacionadas provisórias, sem regra de seleção !!! */}
-          <div className="row g-4">
-            {relacionadas.map((oracao) => (
-              <div key={oracao.titulo} className="col-12 col-sm-6 col-lg-3">
-                <article className="card h-100">
-                  <div
-                    className="ratio ratio-1x1 bg-secondary-subtle"
-                    aria-hidden="true"
-                  />
-                  <div className="card-body d-flex flex-column">
-                    <h3 className="h6 card-title">{oracao.titulo}</h3>
-                    <p className="card-text small">{oracao.descricao}</p>
-                    <p>
-                      <a
-                        href="#"
-                        className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
-                      >
-                        {oracao.tag}
-                      </a>
-                    </p>
-                    <a href="#" className="mt-auto">
-                      Ler oração
-                    </a>
-                  </div>
-                </article>
-              </div>
-            ))}
-          </div>
+          <CarrosselOracoesRelacionadas
+            oracoes={relacionadas}
+            busca={busca}
+            ordem={ordem}
+            categoria={categoria}
+          />
         </section>
       </main>
 
-      <footer className="border-top bg-light">
-        <div className="container py-5">
-          <div className="row g-4">
-            <div className="col-12 col-md-6 col-lg-3">
-              <p className="fs-5 fw-semibold text-primary mb-1">Ecce Homo</p>
-              <p className="small text-uppercase text-secondary">
-                Ad maiorem Dei gloriam
-              </p>
-              <p className="small mb-0">
-                Um espaço dedicado à oração e à vida católica, para maior glória
-                de Deus.
-              </p>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Navegação</h2>
-              <nav aria-label="Rodapé" className="d-flex flex-column gap-1">
-                <Link href="/" className="link-secondary small">
-                  Início
-                </Link>
-                <Link href="/oracoes" className="link-secondary small">
-                  Orações
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Sobre
-                </Link>
-              </nav>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Categorias</h2>
-              <nav
-                aria-label="Categorias do rodapé"
-                className="d-flex flex-column gap-1"
-              >
-                <Link href="/404" className="link-secondary small">
-                  Orações Marianas
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações a Jesus
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações ao Espírito Santo
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações aos Santos
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações da Igreja
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações Diversas
-                </Link>
-              </nav>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Receba novas orações</h2>
-              <p className="small">
-                Cadastre seu e-mail e receba novos conteúdos do Ecce Homo.
-              </p>
-              <div className="input-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Seu e-mail"
-                  aria-label="Seu e-mail"
-                />
-                <button type="button" className="btn btn-primary">
-                  Cadastrar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="border-top">
-          <div className="container py-3 d-flex flex-column flex-sm-row justify-content-between gap-2">
-            <p className="small text-secondary mb-0">
-              © 2026 Ecce Homo. Todos os direitos reservados.
-            </p>
-            <nav aria-label="Informações legais" className="d-flex gap-3">
-              <Link href="/404" className="link-secondary small">
-                Política de Privacidade
-              </Link>
-              <Link href="/404" className="link-secondary small">
-                Termos de Uso
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <Rodape />
     </>
   );
 }

@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import type { FormEvent, KeyboardEvent } from "react";
+import { hrefOracoes } from "@/lib/hrefOracoes";
 
 export function FormularioBuscaOracao({
   valor = "",
   ordem,
+  categoria,
   placeholder = "Busque uma oração...",
   rotuloCampo = "Busque uma oração",
   rotuloBotao = "Buscar",
@@ -14,6 +16,7 @@ export function FormularioBuscaOracao({
 }: {
   valor?: string;
   ordem?: string;
+  categoria?: string;
   placeholder?: string;
   rotuloCampo?: string;
   rotuloBotao?: string;
@@ -35,18 +38,7 @@ export function FormularioBuscaOracao({
     evento.preventDefault();
     const dados = new FormData(evento.currentTarget);
     const texto = String(dados.get("busca") ?? "").trim().slice(0, 50);
-    const params = new URLSearchParams();
-
-    if (texto) {
-      params.set("busca", texto);
-    }
-
-    if (ordem && ordem !== "recentes") {
-      params.set("ordem", ordem);
-    }
-
-    const consulta = params.toString();
-    router.push(consulta ? `/oracoes?${consulta}` : "/oracoes");
+    router.push(hrefOracoes({ busca: texto, ordem, categoria }));
   }
 
   return (

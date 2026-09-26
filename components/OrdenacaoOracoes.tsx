@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { hrefOracoes } from "@/lib/hrefOracoes";
 
 const opcoes = [
   ["recentes", "Mais recentes"],
@@ -12,9 +13,11 @@ const opcoes = [
 export function OrdenacaoOracoes({
   valor,
   busca,
+  categoria,
 }: {
   valor: string;
   busca: string;
+  categoria?: string;
 }) {
   const router = useRouter();
 
@@ -26,18 +29,13 @@ export function OrdenacaoOracoes({
         value={valor}
         aria-label="Ordenar por"
         onChange={(evento) => {
-          const params = new URLSearchParams();
-
-          if (busca) {
-            params.set("busca", busca);
-          }
-
-          if (evento.target.value !== "recentes") {
-            params.set("ordem", evento.target.value);
-          }
-
-          const consulta = params.toString();
-          router.push(consulta ? `/oracoes?${consulta}` : "/oracoes");
+          router.push(
+            hrefOracoes({
+              busca,
+              ordem: evento.target.value,
+              categoria,
+            }),
+          );
         }}
       >
         {opcoes.map(([id, rotulo]) => (

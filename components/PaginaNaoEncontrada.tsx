@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { Rodape } from "@/components/Rodape";
 
 export default function PaginaNaoEncontrada() {
   return (
@@ -25,7 +26,10 @@ export default function PaginaNaoEncontrada() {
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link href="/oracoes" className="link-secondary text-decoration-none">
+              <Link
+                href="/oracoes"
+                className="link-secondary text-decoration-none"
+              >
                 Orações
               </Link>
               <Link href="/404" className="link-secondary text-decoration-none">
@@ -87,99 +91,7 @@ export default function PaginaNaoEncontrada() {
         </section>
       </main>
 
-      <footer className="border-top bg-light">
-        <div className="container py-5">
-          <div className="row g-4">
-            <div className="col-12 col-md-6 col-lg-3">
-              <Link
-                href="/"
-                className="d-block fs-5 fw-semibold text-primary mb-1 text-decoration-none"
-              >
-                Ecce Homo
-              </Link>
-              <p className="small text-uppercase text-secondary">
-                Ad maiorem Dei gloriam
-              </p>
-              {/* !!! ESTÁTICO — texto institucional provisório !!! */}
-              <p className="small mb-0">
-                Um espaço dedicado à oração e à vida católica, para maior glória
-                de Deus.
-              </p>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Navegação</h2>
-              <nav aria-label="Rodapé" className="d-flex flex-column gap-1">
-                <Link href="/" className="link-secondary small">
-                  Início
-                </Link>
-                <Link href="/oracoes" className="link-secondary small">
-                  Orações
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Sobre
-                </Link>
-              </nav>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Categorias</h2>
-              {/* !!! ESTÁTICO — links de categoria provisórios !!! */}
-              <nav aria-label="Categorias" className="d-flex flex-column gap-1">
-                <Link href="/404" className="link-secondary small">
-                  Orações Marianas
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações a Jesus
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações ao Espírito Santo
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações aos Santos
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações da Igreja
-                </Link>
-                <Link href="/404" className="link-secondary small">
-                  Orações Diversas
-                </Link>
-              </nav>
-            </div>
-            <div className="col-12 col-md-6 col-lg-3">
-              <h2 className="h6">Receba novas orações</h2>
-              {/* !!! ESTÁTICO — newsletter sem envio !!! */}
-              <p className="small">
-                Cadastre seu e-mail e receba novos conteúdos do Ecce Homo.
-              </p>
-              <div className="input-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Seu e-mail"
-                  aria-label="Seu e-mail"
-                />
-                <button type="button" className="btn btn-primary">
-                  Cadastrar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="border-top">
-          <div className="container py-3 d-flex flex-column flex-sm-row justify-content-between gap-2">
-            <p className="small text-secondary mb-0">
-              © 2026 Ecce Homo. Todos os direitos reservados.
-            </p>
-            <nav aria-label="Informações legais" className="d-flex gap-3">
-              <Link href="/404" className="link-secondary small">
-                Política de Privacidade
-              </Link>
-              <Link href="/404" className="link-secondary small">
-                Termos de Uso
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </footer>
+      <Rodape />
     </>
   );
 }
