@@ -1,55 +1,161 @@
+import Image from "next/image";
 import Link from "next/link";
+import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
+import { listarOracoesPublicadas } from "@/domain/oracoes";
+import type { Oracao } from "@/types/oracao";
 
-{
-  /* !!! ESTÁTICO — futuramente virá do domínio/repository !!! */
+const tamanhoPagina = 9;
+const tamanhoJanela = 5;
+
+function caminhoImagemPublica(referencia: string): string {
+  if (referencia.startsWith("public/")) {
+    return `/${referencia.slice("public/".length)}`;
+  }
+
+  return referencia;
 }
-const oracoes = [
-  {
-    titulo: "Ave-Maria",
-    descricao: "A oração que nos une a Maria.",
-    tags: ["Orações Marianas", "Nossa Senhora"],
-  },
-  {
-    titulo: "Consagração a Jesus",
-    descricao: "Entregue sua vida a Cristo.",
-    tags: ["Orações a Jesus", "Consagração"],
-  },
-  {
-    titulo: "Oração a São José",
-    descricao: "Peça a intercessão do pai adotivo de Jesus.",
-    tags: ["Orações aos Santos", "São José"],
-  },
-  {
-    titulo: "Oração a Nossa Senhora Aparecida",
-    descricao: "Confie suas intenções à Mãe do Brasil.",
-    tags: ["Orações Marianas", "Nossa Senhora"],
-  },
-  {
-    titulo: "Oração da Manhã",
-    descricao: "Comece o dia com Deus.",
-    tags: ["Orações Diversas", "Manhã"],
-  },
-  {
-    titulo: "Oração da Noite",
-    descricao: "Entregue seu dia ao Senhor.",
-    tags: ["Orações Diversas", "Noite"],
-  },
-  {
-    titulo: "Vinde Espírito Santo",
-    descricao: "Peça os dons do Espírito Santo.",
-    tags: ["Orações ao Espírito Santo", "Pentecostes"],
-  },
-  {
-    titulo: "Oração do Terço",
-    descricao: "Medite os mistérios do Rosário.",
-    tags: ["Orações Marianas", "Rosário"],
-  },
-  {
-    titulo: "Oração a Santo Antônio",
-    descricao: "Peça a intercessão de Santo Antônio.",
-    tags: ["Orações aos Santos", "Santo Antônio"],
-  },
-];
+
+function paginaSolicitada(
+  valor: string | string[] | undefined,
+  totalPaginas: number,
+): number {
+  const texto = Array.isArray(valor) ? valor[0] : valor;
+  const numero = Number(texto);
+
+  if (!texto || !Number.isInteger(numero) || numero < 1) {
+    return 1;
+  }
+
+  if (totalPaginas < 1) {
+    return 1;
+  }
+
+  return Math.min(numero, totalPaginas);
+}
+
+function janelaDePaginas(atual: number, total: number): number[] {
+  if (total < 1) {
+    return [];
+  }
+
+  const quantidade = Math.min(tamanhoJanela, total);
+  let inicio = atual - Math.floor(tamanhoJanela / 2);
+
+  if (inicio < 1) {
+    inicio = 1;
+  }
+
+  if (inicio + quantidade - 1 > total) {
+    inicio = total - quantidade + 1;
+  }
+
+  return Array.from({ length: quantidade }, (_, indice) => inicio + indice);
+}
+
+type Ordenacao = "recentes" | "antigas" | "az" | "za";
+
+function textoParametro(valor: string | string[] | undefined): string | undefined {
+  return Array.isArray(valor) ? valor[0] : valor;
+}
+
+function ordenacaoSolicitada(valor: string | string[] | undefined): Ordenacao {
+  const texto = textoParametro(valor);
+
+  if (texto === "antigas" || texto === "az" || texto === "za" || texto === "recentes") {
+    return texto;
+  }
+
+  return "recentes";
+}
+
+function ordenarOracoes(lista: Oracao[], ordem: Ordenacao): Oracao[] {
+  return [...lista].sort((a, b) => {
+    if (ordem === "az" || ordem === "za") {
+      const titulos = a.titulo.localeCompare(b.titulo, "pt");
+      return ordem === "az" ? titulos : -titulos;
+    }
+
+    const datas = a.createdAt.localeCompare(b.createdAt);
+    return ordem === "antigas" ? datas : -datas;
+  });
+}
+
+function normalizar(texto: string): string {
+  return texto
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLocaleLowerCase("pt")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function palavrasDaBusca(busca: string): string[] {
+  return normalizar(busca).split(" ").filter((palavra) => palavra.length > 0);
+}
+
+function relevancia(titulo: string, busca: string, palavras: string[]): number {
+  const tituloNormalizado = normalizar(titulo);
+
+  if (tituloNormalizado === normalizar(busca)) {
+    return 0;
+  }
+
+  if (palavras.every((palavra) => tituloNormalizado.includes(palavra))) {
+    return 1;
+  }
+
+  if (palavras.some((palavra) => tituloNormalizado.includes(palavra))) {
+    return 2;
+  }
+
+  return 3;
+}
+
+function filtrarPorTitulo(lista: Oracao[], busca: string): Oracao[] {
+  const palavras = palavrasDaBusca(busca);
+
+  if (palavras.length === 0) {
+    return lista;
+  }
+
+  return lista.filter((oracao) => relevancia(oracao.titulo, busca, palavras) < 3);
+}
+
+function ordenarBusca(lista: Oracao[], busca: string, ordem: Ordenacao): Oracao[] {
+  const palavras = palavrasDaBusca(busca);
+
+  if (palavras.length === 0) {
+    return ordenarOracoes(lista, ordem);
+  }
+
+  const grupos = [0, 1, 2].map((nivel) =>
+    ordenarOracoes(
+      lista.filter((oracao) => relevancia(oracao.titulo, busca, palavras) === nivel),
+      ordem,
+    ),
+  );
+
+  return grupos.flat();
+}
+
+function hrefPagina(pagina: number, ordem: Ordenacao, busca: string): string {
+  const params = new URLSearchParams();
+
+  if (busca) {
+    params.set("busca", busca);
+  }
+
+  if (ordem !== "recentes") {
+    params.set("ordem", ordem);
+  }
+
+  if (pagina > 1) {
+    params.set("pagina", String(pagina));
+  }
+
+  const consulta = params.toString();
+  return consulta ? `/oracoes?${consulta}` : "/oracoes";
+}
 
 const categorias = [
   { nome: "Todas as Orações", quantidade: 32, ativa: true },
@@ -71,7 +177,23 @@ const momentos = [
   ["Paz", 4],
 ] as const;
 
-export default function PaginaOracoes() {
+export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
+  const {
+    pagina: paginaInformada,
+    ordem: ordemInformada,
+    busca: buscaInformada,
+  } = await props.searchParams;
+  const ordem = ordenacaoSolicitada(ordemInformada);
+  const busca = (textoParametro(buscaInformada) ?? "").trim().slice(0, 50);
+  const publicadas = await listarOracoesPublicadas();
+  const encontradas = filtrarPorTitulo(publicadas, busca);
+  const oracoes = ordenarBusca(encontradas, busca, ordem);
+  const totalPaginas = Math.ceil(oracoes.length / tamanhoPagina);
+  const pagina = paginaSolicitada(paginaInformada, totalPaginas);
+  const inicio = (pagina - 1) * tamanhoPagina;
+  const paginaAtual = oracoes.slice(inicio, inicio + tamanhoPagina);
+  const paginasVisiveis = janelaDePaginas(pagina, totalPaginas);
+
   return (
     <>
       <header className="border-bottom bg-white">
@@ -174,22 +296,29 @@ export default function PaginaOracoes() {
               <div className="card">
                 <div className="card-body">
                   <h2 className="h6">Buscar oração</h2>
-                  {/* !!! ESTÁTICO — busca da listagem sem comportamento !!! */}
-                  <div className="input-group mb-4">
-                    <input
-                      type="search"
-                      className="form-control"
-                      placeholder="Digite o nome da oração..."
-                      aria-label="Digite o nome da oração"
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      aria-label="Buscar oração"
-                    >
-                      <i className="bi bi-search" aria-hidden="true" />
-                    </button>
-                  </div>
+                  <form action="/oracoes" method="get" className="mb-4">
+                    {ordem !== "recentes" ? (
+                      <input type="hidden" name="ordem" value={ordem} />
+                    ) : null}
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        name="busca"
+                        className="form-control"
+                        placeholder="Digite o nome da oração..."
+                        aria-label="Digite o nome da oração"
+                        maxLength={50}
+                        defaultValue={busca}
+                      />
+                      <button
+                        type="submit"
+                        className="btn btn-outline-secondary"
+                        aria-label="Buscar oração"
+                      >
+                        <i className="bi bi-search" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </form>
 
                   <h2 className="h6">Categorias</h2>
                   {/* !!! ESTÁTICO — categorias visuais, sem filtro !!! */}
@@ -261,89 +390,116 @@ export default function PaginaOracoes() {
                   <h2 id="titulo-listagem" className="h4 mb-1">
                     Todas as Orações
                   </h2>
-                  {/* !!! ESTÁTICO — quantidade provisória !!! */}
                   <p className="text-secondary small mb-0">
-                    32 orações encontradas
+                    {oracoes.length === 1
+                      ? "1 oração encontrada"
+                      : `${oracoes.length} orações encontradas`}
                   </p>
                 </div>
-                {/* !!! ESTÁTICO — ordenação visual, sem comportamento !!! */}
-                <label className="d-flex align-items-center gap-2 small mb-0">
-                  Ordenar por:
-                  <select
-                    className="form-select form-select-sm"
-                    defaultValue="recentes"
-                  >
-                    <option value="recentes">Mais recentes</option>
-                  </select>
-                </label>
+                <OrdenacaoOracoes valor={ordem} busca={busca} />
               </div>
 
-              <div className="row g-4">
-                {oracoes.map((oracao) => (
-                  <div key={oracao.titulo} className="col-12 col-md-6 col-lg-4">
-                    <article className="card h-100">
-                      <div
-                        className="ratio ratio-4x3 bg-secondary-subtle"
-                        aria-hidden="true"
-                      />
-                      <div className="card-body d-flex flex-column">
-                        <h3 className="h6 card-title">{oracao.titulo}</h3>
-                        <p className="card-text small">{oracao.descricao}</p>
-                        <p className="d-flex flex-wrap gap-1 mb-3">
-                          {oracao.tags.map((tag) => (
-                            <a
-                              key={tag}
-                              href="#"
-                              className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
-                            >
-                              {tag}
-                            </a>
-                          ))}
-                        </p>
-                        <a href="#" className="mt-auto">
-                          Ler oração
-                        </a>
-                      </div>
-                    </article>
+              {paginaAtual.length === 0 ? (
+                busca ? (
+                  <div>
+                    <p className="mb-1">Nenhuma oração encontrada</p>
+                    <p className="text-secondary mb-0">
+                      Não encontramos nenhuma oração com esse título.
+                    </p>
                   </div>
-                ))}
-              </div>
+                ) : (
+                  <p className="text-secondary mb-0">Nenhuma oração cadastrada.</p>
+                )
+              ) : (
+                <div className="row g-4">
+                  {paginaAtual.map((oracao) => (
+                    <div key={oracao.id} className="col-12 col-md-6 col-lg-4">
+                      <article className="card h-100">
+                        <div className="ratio ratio-4x3 bg-secondary-subtle">
+                          <Image
+                            src={caminhoImagemPublica(oracao.imagemVertical)}
+                            alt={oracao.textoAlternativo}
+                            fill
+                            className="object-fit-cover"
+                            sizes="(min-width: 992px) 280px, (min-width: 768px) 50vw, 100vw"
+                          />
+                        </div>
+                        <div className="card-body d-flex flex-column">
+                          <h3 className="h6 card-title">{oracao.titulo}</h3>
+                          {oracao.descricao ? (
+                            <p className="card-text small">{oracao.descricao}</p>
+                          ) : null}
+                          <p className="d-flex flex-wrap gap-1 mb-3">
+                            {oracao.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="badge rounded-pill text-bg-primary fw-normal"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </p>
+                          <Link
+                            href={`/oracoes/${oracao.slug}`}
+                            className="mt-auto"
+                          >
+                            Ler oração
+                          </Link>
+                        </div>
+                      </article>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-              {/* !!! ESTÁTICO — paginação visual, sem comportamento !!! */}
-              <nav className="mt-4" aria-label="Paginação">
-                <ul className="pagination justify-content-center mb-0">
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Anterior
-                    </a>
-                  </li>
-                  <li className="page-item active" aria-current="page">
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      4
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      Próxima
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+              {totalPaginas > 0 ? (
+                <nav className="mt-4" aria-label="Paginação">
+                  <ul className="pagination justify-content-center mb-0">
+                    <li
+                      className={`page-item${pagina === 1 ? " disabled" : ""}`}
+                    >
+                      {pagina === 1 ? (
+                        <span className="page-link">Anterior</span>
+                      ) : (
+                        <Link
+                          className="page-link"
+                          href={hrefPagina(pagina - 1, ordem, busca)}
+                        >
+                          Anterior
+                        </Link>
+                      )}
+                    </li>
+                    {paginasVisiveis.map((numero) => (
+                      <li
+                        key={numero}
+                        className={`page-item${numero === pagina ? " active" : ""}`}
+                        aria-current={numero === pagina ? "page" : undefined}
+                      >
+                        <Link
+                          className="page-link"
+                          href={hrefPagina(numero, ordem, busca)}
+                        >
+                          {numero}
+                        </Link>
+                      </li>
+                    ))}
+                    <li
+                      className={`page-item${pagina === totalPaginas ? " disabled" : ""}`}
+                    >
+                      {pagina === totalPaginas ? (
+                        <span className="page-link">Próxima</span>
+                      ) : (
+                        <Link
+                          className="page-link"
+                          href={hrefPagina(pagina + 1, ordem, busca)}
+                        >
+                          Próxima
+                        </Link>
+                      )}
+                    </li>
+                  </ul>
+                </nav>
+              ) : null}
             </section>
           </div>
         </div>

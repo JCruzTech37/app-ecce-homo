@@ -1,8 +1,15 @@
-import { repositorioOracoesJson } from "@/lib/repositorioOracoesJson";
+import type { RepositorioOracoes } from "@/domain/repositorioOracoes";
+import { repositorioOracoesFirestore } from "@/lib/repositorioOracoesFirestore";
 import type { Oracao } from "@/types/oracao";
+
+const repositorio: RepositorioOracoes = repositorioOracoesFirestore;
 
 export async function obterOracaoPorSlug(
   slug: string,
 ): Promise<Oracao | null> {
-  return repositorioOracoesJson.obterPorSlug(slug);
+  return repositorio.obterPorSlug(slug);
+}
+
+export async function listarOracoesPublicadas(): Promise<Oracao[]> {
+  return repositorio.listarPublicadas();
 }

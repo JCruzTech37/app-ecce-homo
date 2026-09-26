@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # Firebase — cache, logs e credenciais locais
 # firebase.json, firestore.rules e firestore.indexes.json permanecem versionados

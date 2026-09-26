@@ -26,12 +26,18 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
   }
 
   if (
+    !texto(valor.id) ||
     valor.slug !== slug ||
     !texto(valor.titulo) ||
     !texto(valor.texto) ||
     !texto(valor.imagemVertical) ||
     !texto(valor.textoAlternativo) ||
-    !texto(valor.jaculatoria)
+    !texto(valor.jaculatoria) ||
+    typeof valor.publicado !== "boolean" ||
+    !texto(valor.createdAt) ||
+    !texto(valor.updatedAt) ||
+    !Array.isArray(valor.tags) ||
+    !valor.tags.every(texto)
   ) {
     return null;
   }
@@ -48,7 +54,16 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
     return null;
   }
 
+  if (valor.seoTitle !== undefined && !texto(valor.seoTitle)) {
+    return null;
+  }
+
+  if (valor.seoDescription !== undefined && !texto(valor.seoDescription)) {
+    return null;
+  }
+
   return {
+    id: valor.id,
     slug,
     titulo: valor.titulo,
     descricao: texto(valor.descricao) ? valor.descricao : undefined,
@@ -59,6 +74,14 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
     fraseSanto: texto(valor.fraseSanto) ? valor.fraseSanto : undefined,
     fraseSantoAutor: texto(valor.fraseSantoAutor)
       ? valor.fraseSantoAutor
+      : undefined,
+    tags: valor.tags,
+    publicado: valor.publicado,
+    createdAt: valor.createdAt,
+    updatedAt: valor.updatedAt,
+    seoTitle: texto(valor.seoTitle) ? valor.seoTitle : undefined,
+    seoDescription: texto(valor.seoDescription)
+      ? valor.seoDescription
       : undefined,
   };
 }

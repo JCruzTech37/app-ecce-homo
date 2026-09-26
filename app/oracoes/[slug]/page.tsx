@@ -8,6 +8,14 @@ const proporcaoRetrato = {
   "--bs-aspect-ratio": "133.333%",
 } as CSSProperties;
 
+function caminhoImagemPublica(referencia: string): string {
+  if (referencia.startsWith("public/")) {
+    return `/${referencia.slice("public/".length)}`;
+  }
+
+  return referencia;
+}
+
 // !!! ESTÁTICO — futuramente virá do domínio/repository !!!
 const relacionadas = [
   {
@@ -236,7 +244,7 @@ export default async function PaginaOracao(
                 style={proporcaoRetrato}
               >
                 <Image
-                  src={oracao.imagemVertical}
+                  src={caminhoImagemPublica(oracao.imagemVertical)}
                   alt={oracao.textoAlternativo}
                   fill
                   className="object-fit-cover"
