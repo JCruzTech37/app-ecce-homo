@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
 import type { Oracao } from "@/types/oracao";
@@ -228,23 +229,8 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
               </Link>
             </nav>
 
-            {/* !!! ESTÁTICO — a pesquisa ainda não possui comportamento !!! */}
             <div className="col-12 col-lg-4">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Busque uma oração..."
-                  aria-label="Busque uma oração"
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  aria-label="Buscar"
-                >
-                  <i className="bi bi-search" aria-hidden="true" />
-                </button>
-              </div>
+              <FormularioBuscaOracao valor={busca} ordem={ordem} />
             </div>
           </div>
         </div>
@@ -296,29 +282,15 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
               <div className="card">
                 <div className="card-body">
                   <h2 className="h6">Buscar oração</h2>
-                  <form action="/oracoes" method="get" className="mb-4">
-                    {ordem !== "recentes" ? (
-                      <input type="hidden" name="ordem" value={ordem} />
-                    ) : null}
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        name="busca"
-                        className="form-control"
-                        placeholder="Digite o nome da oração..."
-                        aria-label="Digite o nome da oração"
-                        maxLength={50}
-                        defaultValue={busca}
-                      />
-                      <button
-                        type="submit"
-                        className="btn btn-outline-secondary"
-                        aria-label="Buscar oração"
-                      >
-                        <i className="bi bi-search" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </form>
+                  <FormularioBuscaOracao
+                    valor={busca}
+                    ordem={ordem}
+                    placeholder="Digite o nome da oração..."
+                    rotuloCampo="Digite o nome da oração"
+                    rotuloBotao="Buscar oração"
+                    classeBotao="btn btn-outline-secondary"
+                    classeFormulario="mb-4"
+                  />
 
                   <h2 className="h6">Categorias</h2>
                   {/* !!! ESTÁTICO — categorias visuais, sem filtro !!! */}

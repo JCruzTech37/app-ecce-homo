@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { obterOracaoPorSlug } from "@/domain/oracoes";
 
 const proporcaoRetrato = {
@@ -92,23 +93,8 @@ export default async function PaginaOracao(
                 Sobre
               </Link>
             </nav>
-            {/* !!! ESTÁTICO — a pesquisa ainda não possui comportamento !!! */}
             <div className="col-12 col-lg-4">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Busque uma oração..."
-                  aria-label="Busque uma oração"
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  aria-label="Buscar"
-                >
-                  <i className="bi bi-search" aria-hidden="true" />
-                </button>
-              </div>
+              <FormularioBuscaOracao />
             </div>
           </div>
         </div>

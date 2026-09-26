@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 
 export default function Home() {
   return (
@@ -38,23 +39,8 @@ export default function Home() {
               </Link>
             </nav>
 
-            {/* !!! ESTÁTICO — a pesquisa ainda não possui comportamento !!! */}
             <div className="col-12 col-lg-4">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Busque uma oração..."
-                  aria-label="Busque uma oração"
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  aria-label="Buscar"
-                >
-                  <i className="bi bi-search" aria-hidden="true" />
-                </button>
-              </div>
+              <FormularioBuscaOracao />
             </div>
           </div>
         </div>

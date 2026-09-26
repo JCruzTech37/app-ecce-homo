@@ -52,11 +52,42 @@ function normalizar(valor: unknown): unknown {
   return valor;
 }
 
+function conteudoEditorial(oracao: Record<string, unknown>): Record<string, unknown> {
+  const conteudo = { ...oracao };
+  delete conteudo.createdAt;
+  delete conteudo.updatedAt;
+  return conteudo;
+}
+
+function createdAtPreservado(existente: unknown, agora: string): unknown {
+  if (typeof existente === "string" && existente.length > 0) {
+    return existente;
+  }
+
+  if (
+    typeof existente === "object" &&
+    existente !== null &&
+    "toDate" in existente &&
+    typeof existente.toDate === "function"
+  ) {
+    return existente;
+  }
+
+  return agora;
+}
+
 function mesmoConteudo(
   esperado: Record<string, unknown>,
   recebido: Record<string, unknown> | undefined,
 ): boolean {
-  return JSON.stringify(normalizar(esperado)) === JSON.stringify(normalizar(recebido));
+  if (!recebido) {
+    return false;
+  }
+
+  return (
+    JSON.stringify(normalizar(conteudoEditorial(esperado))) ===
+    JSON.stringify(normalizar(conteudoEditorial(recebido)))
+  );
 }
 
 async function main(): Promise<void> {
@@ -64,16 +95,36 @@ async function main(): Promise<void> {
   const db = obterFirestore();
   const colecao = db.collection("prayers");
   const antes = await colecao.get();
+  const existentes = new Map(antes.docs.map((doc) => [doc.id, doc.data()]));
+  const agora = new Date().toISOString();
 
   console.log("antes", antes.size);
 
   const gravados: string[] = [];
+  const criados: string[] = [];
+  const atualizados: string[] = [];
 
   try {
     for (const oracao of oracoes) {
       const id = oracao.id as string;
-      await colecao.doc(id).set(oracao);
+      const atual = existentes.get(id);
+      const createdAt = atual
+        ? createdAtPreservado(atual.createdAt, agora)
+        : agora;
+
+      await colecao.doc(id).set({
+        ...conteudoEditorial(oracao),
+        createdAt,
+        updatedAt: agora,
+      });
+
       gravados.push(id);
+
+      if (atual) {
+        atualizados.push(id);
+      } else {
+        criados.push(id);
+      }
     }
   } catch (erro) {
     console.log("gravados_antes_da_falha", gravados.join(","));
@@ -87,6 +138,8 @@ async function main(): Promise<void> {
   );
 
   console.log("importados", gravados.length);
+  console.log("criados", criados.length);
+  console.log("atualizados", atualizados.length);
   console.log("depois", depois.size);
   console.log("ids", gravados.join(","));
   console.log("divergencias", divergencias.length);
