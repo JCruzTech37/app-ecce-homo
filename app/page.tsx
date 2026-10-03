@@ -55,8 +55,17 @@ export default async function Home() {
               >
                 Orações
               </Link>
-              <Link href="/404" className="link-secondary text-decoration-none">
+              <Link
+                href="/sobre"
+                className="link-secondary text-decoration-none"
+              >
                 Sobre
+              </Link>
+              <Link
+                href="/sobre#contato"
+                className="link-secondary text-decoration-none"
+              >
+                Contato
               </Link>
             </nav>
 
@@ -135,124 +144,6 @@ export default async function Home() {
             oracoes={recentes}
             rotuloNavegacao="Páginas de orações mais recentes"
           />
-        </section>
-
-        <section
-          className="bg-light border-top border-bottom"
-          aria-labelledby="categorias-titulo"
-        >
-          <div className="container py-5">
-            <h2
-              id="categorias-titulo"
-              className="h4 mb-4 border-start border-primary border-3 ps-2"
-            >
-              Categorias de orações
-            </h2>
-
-            {/* !!! ESTÁTICO — agrupamento visual provisório, sem categorias funcionais !!! */}
-            <div className="row g-3">
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-heart fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações Marianas</h3>
-                    <p className="small text-secondary">
-                      Orações a Nossa Senhora
-                    </p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-plus-lg fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações a Jesus</h3>
-                    <p className="small text-secondary">
-                      Orações ao Sagrado Coração
-                    </p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-wind fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações ao Espírito Santo</h3>
-                    <p className="small text-secondary">
-                      Peça a luz e a força do Espírito
-                    </p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-people fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações aos Santos</h3>
-                    <p className="small text-secondary">
-                      Intercessão dos Santos
-                    </p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-building fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações da Igreja</h3>
-                    <p className="small text-secondary">Orações tradicionais</p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-2">
-                <article className="card h-100 text-center">
-                  <div className="card-body d-flex flex-column">
-                    <i
-                      className="bi bi-book fs-3 text-primary"
-                      aria-hidden="true"
-                    />
-                    <h3 className="h6 mt-2">Orações Diversas</h3>
-                    <p className="small text-secondary">
-                      Para todos os momentos
-                    </p>
-                    <Link href="/404" className="mt-auto small">
-                      Ver orações
-                    </Link>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
         </section>
 
         <section className="container py-5" aria-labelledby="chamada-titulo">

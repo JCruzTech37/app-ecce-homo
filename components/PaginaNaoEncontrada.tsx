@@ -32,8 +32,17 @@ export default function PaginaNaoEncontrada() {
               >
                 Orações
               </Link>
-              <Link href="/404" className="link-secondary text-decoration-none">
+              <Link
+                href="/sobre"
+                className="link-secondary text-decoration-none"
+              >
                 Sobre
+              </Link>
+              <Link
+                href="/sobre#contato"
+                className="link-secondary text-decoration-none"
+              >
+                Contato
               </Link>
             </nav>
 

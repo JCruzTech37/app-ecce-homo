@@ -23,8 +23,8 @@ export async function Rodape() {
               Ad maiorem Dei gloriam
             </p>
             <p className="small mb-0">
-              Um espaço dedicado à oração e à vida católica, para maior glória
-              de Deus.
+              {'"Jesus Cristo é o Senhor!, para a glória de Deus Pai."'} <br />
+              {"Filipenses 2:11"}
             </p>
           </div>
           <div className="col-12 col-md-6 col-lg-3">
@@ -36,8 +36,11 @@ export async function Rodape() {
               <Link href="/oracoes" className="link-secondary small">
                 Orações
               </Link>
-              <Link href="/404" className="link-secondary small">
+              <Link href="/sobre" className="link-secondary small">
                 Sobre
+              </Link>
+              <Link href="/sobre#contato" className="link-secondary small">
+                Contato
               </Link>
             </nav>
           </div>

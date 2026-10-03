@@ -70,8 +70,17 @@ export default function PaginaOracaoExemplo() {
               >
                 Orações
               </Link>
-              <Link href="/404" className="link-secondary text-decoration-none">
+              <Link
+                href="/sobre"
+                className="link-secondary text-decoration-none"
+              >
                 Sobre
+              </Link>
+              <Link
+                href="/sobre#contato"
+                className="link-secondary text-decoration-none"
+              >
+                Contato
               </Link>
             </nav>
             <div className="col-12 col-lg-4">
