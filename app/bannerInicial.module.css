@@ -1,0 +1,49 @@
+.banner {
+  position: relative;
+  overflow: hidden;
+}
+
+.limite {
+  position: relative;
+}
+
+.texto {
+  position: relative;
+  z-index: 1;
+}
+
+.imagem {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.imagem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--cor-fundo-secundario) 0%,
+    transparent 40%
+  );
+}
+
+@media (max-width: 991.98px) {
+  .imagem {
+    margin-bottom: calc(-1 * var(--espaco-2xl));
+  }
+}
+
+@media (min-width: 992px) {
+  .imagem {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--bs-gutter-x) * 0.5);
+    width: calc(5 / 12 * (100% - var(--bs-gutter-x)));
+    aspect-ratio: auto;
+  }
+}

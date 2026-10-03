@@ -1,0 +1,6 @@
+.descricao {
+  margin-bottom: var(--espaco-xl);
+  font-size: var(--tipo-texto-secundario-tamanho);
+  font-weight: var(--tipo-texto-secundario-peso);
+  font-style: italic;
+}

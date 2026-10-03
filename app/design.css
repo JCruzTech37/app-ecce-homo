@@ -1,0 +1,206 @@
+/*
+ * Aplicação dos tokens do Ecce Homo.
+ * Não redefine --bs-* no :root.
+ * Hover, focus, active e disabled repetem a cor de repouso
+ * apenas para o Bootstrap não recolocar azul ou branco.
+ */
+
+body {
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  font-family: var(--tipo-texto-fonte);
+  font-size: var(--tipo-texto-tamanho);
+  font-weight: var(--tipo-texto-peso);
+}
+
+h1,
+h1.display-6,
+h1.h2 {
+  font-family: var(--tipo-h1-fonte);
+  font-size: var(--tipo-h1-tamanho);
+  font-weight: var(--tipo-h1-peso);
+  color: var(--cor-texto);
+}
+
+h2,
+h2.h4,
+h2.h6 {
+  font-family: var(--tipo-h2-fonte);
+  font-size: var(--tipo-h2-tamanho);
+  font-weight: var(--tipo-h2-peso);
+  color: var(--cor-texto);
+}
+
+h3,
+h3.h6 {
+  font-family: var(--tipo-h3-fonte);
+  font-size: var(--tipo-h3-tamanho);
+  font-weight: var(--tipo-h3-peso);
+  color: var(--cor-texto);
+}
+
+h4,
+.h4 {
+  font-family: var(--tipo-h4-fonte);
+  font-size: var(--tipo-h4-tamanho);
+  font-weight: var(--tipo-h4-peso);
+  color: var(--cor-texto);
+}
+
+.small,
+small {
+  font-family: var(--tipo-texto-secundario-fonte);
+  font-size: var(--tipo-texto-secundario-tamanho) !important;
+  font-weight: var(--tipo-texto-secundario-peso);
+}
+
+a {
+  color: var(--link-cor);
+}
+
+a:hover,
+a:focus {
+  color: var(--link-cor);
+}
+
+.link-primary,
+.link-secondary,
+.link-primary:hover,
+.link-primary:focus,
+.link-secondary:hover,
+.link-secondary:focus {
+  color: var(--link-cor) !important;
+}
+
+.text-primary {
+  color: var(--cor-primaria) !important;
+}
+
+.text-body {
+  color: var(--cor-texto) !important;
+}
+
+.bg-white {
+  background-color: var(--cor-fundo) !important;
+}
+
+.bg-light {
+  background-color: var(--cor-fundo-secundario) !important;
+}
+
+.border-primary {
+  border-color: var(--cor-primaria) !important;
+}
+
+.bg-primary-subtle {
+  background-color: var(--cor-fundo) !important;
+}
+
+.rounded {
+  border-radius: var(--raio-elemento) !important;
+}
+
+.rounded-top {
+  border-top-left-radius: var(--raio-elemento) !important;
+  border-top-right-radius: var(--raio-elemento) !important;
+}
+
+.rounded-bottom {
+  border-bottom-left-radius: var(--raio-elemento) !important;
+  border-bottom-right-radius: var(--raio-elemento) !important;
+}
+
+.card {
+  background-color: var(--card-fundo);
+  color: var(--card-texto);
+  border-radius: var(--card-raio);
+  overflow: hidden;
+}
+
+.card-body {
+  padding: var(--espaco-md);
+}
+
+.card-title {
+  font-family: var(--card-titulo-fonte);
+}
+
+.btn-primary {
+  background-color: var(--botao-primario-fundo);
+  border-color: var(--botao-primario-fundo);
+  color: var(--botao-primario-texto);
+  font-family: var(--botao-primario-fonte);
+  border-radius: var(--botao-primario-raio);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--botao-primario-fundo);
+  border-color: var(--botao-primario-fundo);
+  color: var(--botao-primario-texto);
+  box-shadow: none;
+}
+
+.btn-outline-primary,
+.btn-outline-secondary {
+  background-color: var(--botao-secundario-fundo-transparente);
+  border-color: var(--botao-secundario-borda);
+  color: var(--botao-secundario-texto);
+  font-family: var(--botao-secundario-fonte);
+  border-radius: var(--botao-secundario-raio);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active {
+  background-color: var(--botao-secundario-fundo-transparente);
+  border-color: var(--botao-secundario-borda);
+  color: var(--botao-secundario-texto);
+  box-shadow: none;
+}
+
+.badge {
+  font-family: var(--badge-fonte);
+  font-size: var(--badge-tamanho-maximo);
+  font-weight: var(--badge-peso);
+  border-radius: var(--badge-raio) !important;
+}
+
+.text-bg-primary {
+  background-color: var(--cor-primaria) !important;
+  color: var(--cor-fundo) !important;
+}
+
+.form-control,
+.form-select,
+.form-select-sm {
+  font-family: var(--input-fonte);
+  font-size: var(--input-tamanho);
+  font-weight: var(--tipo-texto-peso);
+  color: var(--cor-texto);
+  background-color: var(--input-fundo);
+  border-color: var(--input-borda);
+  border-radius: var(--input-raio);
+}
+
+.form-control:focus,
+.form-select:focus {
+  color: var(--cor-texto);
+  background-color: var(--input-fundo);
+  border-color: var(--input-borda);
+  box-shadow: none;
+}
+
+.input-group > .form-control:first-child {
+  border-top-left-radius: var(--input-raio);
+  border-bottom-left-radius: var(--input-raio);
+}
+
+.input-group > .btn:last-child {
+  border-top-right-radius: var(--raio-botao);
+  border-bottom-right-radius: var(--raio-botao);
+}

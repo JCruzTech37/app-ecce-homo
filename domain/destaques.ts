@@ -15,6 +15,16 @@ export function tagsEfetivas(tags: string[], destaque: boolean): string[] {
   return [...tags, categoriaDestaque];
 }
 
+export function tagsExibidasNoCard(tags: string[], limite: number): string[] {
+  if (!tags.includes(categoriaDestaque)) {
+    return tags.slice(0, limite);
+  }
+
+  const demais = tags.filter((tag) => tag !== categoriaDestaque);
+
+  return [categoriaDestaque, ...demais].slice(0, limite);
+}
+
 export function oracoesEmDestaque<
   T extends { isDestaque?: boolean; slug: string },
 >(lista: T[]): T[] {

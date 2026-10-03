@@ -582,3 +582,15 @@ As bordas deverão ser discretas e utilizadas principalmente para:
 * estados de interação.
 
 A estética geral deverá permanecer mais próxima de uma interface editorial do que de uma interface excessivamente arredondada ou “app-like”.
+
+---
+
+## 12. Imagens e o espaço reservado
+
+A imagem se adequa ao espaço definido pelo componente. O espaço não se adequa à imagem.
+
+O componente define a área disponível, inclusive a proporção. A imagem ocupa toda essa área. Ela não altera a largura, a altura nem a estrutura do bloco para caber inteira.
+
+Quando a proporção do arquivo for diferente da área reservada, o enquadramento corta o excedente. Não permanecem faixas vazias, cinzas ou de placeholder ao redor da imagem.
+
+Essa regra vale para banners, cards e demais blocos que reservam um espaço visual antes de receber a imagem.

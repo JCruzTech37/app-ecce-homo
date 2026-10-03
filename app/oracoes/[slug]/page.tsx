@@ -14,6 +14,7 @@ import { categoriaDestaque, nomeCategoriaDestaque } from "@/domain/destaques";
 import { oracoesRelacionadas } from "@/domain/oracoesRelacionadas";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 import { Rodape } from "@/components/Rodape";
+import styles from "./descricao.module.css";
 
 const proporcaoRetrato = {
   "--bs-aspect-ratio": "133.333%",
@@ -169,7 +170,7 @@ export default async function PaginaOracao(
 
       <main>
         {/* !!! ESTÁTICO — placeholder da faixa visual superior !!! */}
-        <div className="bg-secondary-subtle py-4" aria-hidden="true" />
+        <div className="bg-light py-4" aria-hidden="true" />
 
         <div className="container py-4">
           <nav aria-label="Trilha">
@@ -253,7 +254,9 @@ export default async function PaginaOracao(
             <article className="col-12 col-lg-6 order-1 order-lg-2">
               <p className="small text-uppercase text-secondary mb-2">Oração</p>
               <h1 className="display-6">{oracao.titulo}</h1>
-              {oracao.descricao ? <p>{oracao.descricao}</p> : null}
+              {oracao.descricao ? (
+                <p className={styles.descricao}>{oracao.descricao}</p>
+              ) : null}
               <div className="mb-4" style={{ whiteSpace: "pre-line" }}>
                 {oracao.texto}
               </div>
@@ -267,7 +270,7 @@ export default async function PaginaOracao(
                       <Link
                         key={`${tag}-${indice}`}
                         href={hrefOracoes({ categoria: tag })}
-                        className={`badge rounded-pill text-decoration-none fw-normal ${
+                        className={`badge text-decoration-none ${
                           tag === categoriaDestaque
                             ? "text-bg-warning"
                             : "text-bg-primary"

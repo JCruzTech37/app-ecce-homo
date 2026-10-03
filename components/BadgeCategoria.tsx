@@ -8,7 +8,7 @@ export function BadgeCategoria({ tag }: { tag: string }) {
   return (
     <Link
       href={hrefOracoes({ categoria: tag })}
-      className={`badge rounded-pill text-decoration-none fw-normal ${
+      className={`badge text-decoration-none ${
         destaque ? "text-bg-warning" : "text-bg-primary"
       }`}
     >

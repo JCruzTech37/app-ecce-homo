@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
@@ -8,6 +9,7 @@ import {
   listarOracoesRecentes,
 } from "@/domain/oracoes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
+import styles from "./bannerInicial.module.css";
 
 export default async function Home() {
   const paraCarrossel = (
@@ -78,17 +80,17 @@ export default async function Home() {
 
       <main>
         <section
-          className="bg-light border-bottom"
+          className={`${styles.banner} bg-light border-bottom`}
           aria-labelledby="hero-titulo"
         >
-          <div className="container py-5">
+          <div className={`container py-5 ${styles.limite}`}>
             <div className="row align-items-center g-4">
-              <div className="col-12 col-lg-7">
+              <div className={`col-12 col-lg-7 ${styles.texto}`}>
                 {/* !!! ESTÁTICO — texto provisório da apresentação !!! */}
                 <h1 id="hero-titulo" className="display-6 fw-semibold">
-                  “Maria sempre nos conduz a Jesus.”
+                  “...o culto mesmo a Maria nos conduz a Cristo.”
                 </h1>
-                <p className="text-secondary mb-4">São João Paulo II</p>
+                <p className="text-secondary mb-4">— São João Paulo II, Homilia em Saragoça, 6 de novembro de 1982.</p>
                 <p className="lead mb-2">
                   Encontre orações para todos os momentos da sua vida.
                 </p>
@@ -98,10 +100,15 @@ export default async function Home() {
                 </Link>
               </div>
               <div className="col-12 col-lg-5">
-                <div
-                  className="ratio ratio-4x3 bg-secondary-subtle rounded"
-                  aria-hidden="true"
-                />
+                <div className={styles.imagem}>
+                  <Image
+                    src="/images/nossa-senhora-das-dores.jpg"
+                    alt="Nossa Senhora das Dores"
+                    fill
+                    className="object-fit-cover"
+                    sizes="(min-width: 992px) 46vw, 100vw"
+                  />
+                </div>
               </div>
             </div>
           </div>

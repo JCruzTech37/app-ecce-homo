@@ -1,0 +1,130 @@
+/*
+ * Tokens do Design System do Ecce Homo.
+ * Os seletores que aplicam estes valores estão em app/design.css.
+ * As variáveis --bs-* não são remapeadas no :root.
+ */
+
+:root {
+  /* Cores */
+  --cor-fundo: #EEE7DC;
+  --cor-fundo-secundario: #DDD2C0;
+  --cor-primaria: #702126;
+  --cor-vermelho-profundo: #4E181B;
+  --cor-destaque: #A77C39;
+  --cor-texto: #302A26;
+
+  /*
+   * Famílias. Os arquivos vêm do next/font, na classe do <html>.
+   * serif e sans-serif são apenas o genérico final da pilha.
+   */
+  --fonte-titulo: var(--fonte-cinzel-carregada), "Cinzel", serif;
+  --fonte-texto: var(--fonte-source-sans-3-carregada), "Source Sans 3",
+    sans-serif;
+  --fonte-interface: var(--fonte-texto);
+
+  /* Pesos */
+  --peso-regular: 400;
+  --peso-semibold: 600;
+
+  /* Hierarquia tipográfica — mobile */
+  --tipo-h1-fonte: var(--fonte-titulo);
+  --tipo-h1-tamanho: 32px;
+  --tipo-h1-peso: var(--peso-semibold);
+
+  --tipo-h2-fonte: var(--fonte-titulo);
+  --tipo-h2-tamanho: 26px;
+  --tipo-h2-peso: var(--peso-semibold);
+
+  --tipo-h3-fonte: var(--fonte-titulo);
+  --tipo-h3-tamanho: 22px;
+  --tipo-h3-peso: var(--peso-semibold);
+
+  --tipo-h4-fonte: var(--fonte-texto);
+  --tipo-h4-tamanho: 18px;
+  --tipo-h4-peso: var(--peso-semibold);
+
+  --tipo-texto-fonte: var(--fonte-texto);
+  --tipo-texto-tamanho: 16px;
+  --tipo-texto-peso: var(--peso-regular);
+
+  --tipo-texto-secundario-fonte: var(--fonte-texto);
+  --tipo-texto-secundario-tamanho: 14px;
+  --tipo-texto-secundario-peso: var(--peso-regular);
+
+  --tipo-texto-auxiliar-fonte: var(--fonte-texto);
+  --tipo-texto-auxiliar-tamanho: 12px;
+  --tipo-texto-auxiliar-peso: var(--peso-regular);
+
+  /* Espaçamento */
+  --espaco-xs: 4px;
+  --espaco-sm: 8px;
+  --espaco-md: 16px;
+  --espaco-lg: 24px;
+  --espaco-xl: 32px;
+  --espaco-2xl: 48px;
+  --espaco-3xl: 64px;
+  --espaco-4xl: 96px;
+
+  /* Raios */
+  --raio-botao: 6px;
+  --raio-input: 6px;
+  --raio-card: 8px;
+  --raio-elemento: 8px;
+  --raio-badge: 4px;
+
+  /* Cards */
+  --card-fundo: var(--cor-fundo-secundario);
+  --card-texto: var(--cor-texto);
+  --card-titulo-fonte: var(--fonte-titulo);
+  --card-raio: var(--raio-card);
+
+  /* Botão primário. O texto reutiliza a cor de fundo principal. */
+  --botao-primario-fundo: var(--cor-primaria);
+  --botao-primario-texto: var(--cor-fundo);
+  --botao-primario-fonte: var(--fonte-interface);
+  --botao-primario-raio: var(--raio-botao);
+
+  /*
+   * Botão secundário. Os dois fundos previstos permanecem disponíveis:
+   * transparente ou fundo secundário.
+   */
+  --botao-secundario-fundo-transparente: transparent;
+  --botao-secundario-fundo-solido: var(--cor-fundo-secundario);
+  --botao-secundario-texto: var(--cor-primaria);
+  --botao-secundario-borda: var(--cor-primaria);
+  --botao-secundario-fonte: var(--fonte-interface);
+  --botao-secundario-raio: var(--raio-botao);
+
+  /* Links */
+  --link-cor: var(--cor-primaria);
+
+  /*
+   * Badges. O tamanho definido é a faixa 12px–14px, já existente
+   * como texto auxiliar e texto secundário.
+   */
+  --badge-fonte: var(--fonte-interface);
+  --badge-tamanho-minimo: var(--tipo-texto-auxiliar-tamanho);
+  --badge-tamanho-maximo: var(--tipo-texto-secundario-tamanho);
+  --badge-peso: var(--peso-semibold);
+  --badge-raio: var(--raio-badge);
+
+  /* Inputs */
+  --input-fonte: var(--fonte-interface);
+  --input-tamanho: var(--tipo-texto-tamanho);
+  --input-fundo: var(--cor-fundo);
+  --input-borda: var(--cor-fundo-secundario);
+  --input-raio: var(--raio-input);
+}
+
+/*
+ * Desktop a partir de 992px, o breakpoint lg do Bootstrap.
+ * Só os títulos mudam. Texto, secundário e auxiliar permanecem iguais.
+ */
+@media (min-width: 992px) {
+  :root {
+    --tipo-h1-tamanho: 40px;
+    --tipo-h2-tamanho: 32px;
+    --tipo-h3-tamanho: 24px;
+    --tipo-h4-tamanho: 20px;
+  }
+}

@@ -92,7 +92,7 @@ export default function PaginaOracaoExemplo() {
 
       <main>
         {/* !!! ESTÁTICO — placeholder da faixa visual superior !!! */}
-        <div className="bg-secondary-subtle py-4" aria-hidden="true" />
+        <div className="bg-light py-4" aria-hidden="true" />
 
         <div className="container py-4">
           <nav aria-label="Trilha">
@@ -214,19 +214,19 @@ export default function PaginaOracaoExemplo() {
               <p className="d-flex flex-wrap gap-2 mb-0">
                 <a
                   href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                  className="badge text-bg-primary text-decoration-none"
                 >
                   Orações Marianas
                 </a>
                 <a
                   href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                  className="badge text-bg-primary text-decoration-none"
                 >
                   Nossa Senhora
                 </a>
                 <a
                   href="#"
-                  className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                  className="badge text-bg-primary text-decoration-none"
                 >
                   Orações Tradicionais
                 </a>
@@ -280,7 +280,7 @@ export default function PaginaOracaoExemplo() {
                     <p>
                       <a
                         href="#"
-                        className="badge rounded-pill text-bg-primary text-decoration-none fw-normal"
+                        className="badge text-bg-primary text-decoration-none"
                       >
                         {oracao.tag}
                       </a>

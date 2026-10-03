@@ -55,7 +55,7 @@ export default function PaginaNaoEncontrada() {
 
       <main>
         {/* !!! ESTÁTICO — placeholder da faixa visual superior !!! */}
-        <div className="bg-secondary-subtle py-5" aria-hidden="true">
+        <div className="bg-light py-5" aria-hidden="true">
           <div className="py-lg-3" />
         </div>
 

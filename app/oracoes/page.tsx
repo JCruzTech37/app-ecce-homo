@@ -6,7 +6,11 @@ import styles from "./oracoes.module.css";
 import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
 import { PainelFiltrosOracoes } from "@/components/PainelFiltrosOracoes";
 import { categoriasPorQuantidade } from "@/domain/categoriasOracoes";
-import { categoriaDestaque, ehDestaque } from "@/domain/destaques";
+import {
+  categoriaDestaque,
+  ehDestaque,
+  tagsExibidasNoCard,
+} from "@/domain/destaques";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
 import { hrefOracao, hrefOracoes } from "@/lib/hrefOracoes";
 import type { Oracao } from "@/types/oracao";
@@ -256,7 +260,7 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
       </header>
 
       <main>
-        <section className="bg-secondary-subtle border-bottom">
+        <section className="bg-light border-bottom">
           <div className="container py-4">
             <div className="row align-items-center g-4">
               <div className="col-12 col-lg-7">
@@ -382,7 +386,7 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                               </p>
                             ) : null}
                             <p className="d-flex flex-wrap gap-1 mb-3">
-                              {oracao.tags.slice(0, 4).map((tag, indice) => (
+                              {tagsExibidasNoCard(oracao.tags, 4).map((tag, indice) => (
                                 <BadgeCategoria
                                   key={`${tag}-${indice}`}
                                   tag={tag}

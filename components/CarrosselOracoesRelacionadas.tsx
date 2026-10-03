@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "@/app/oracoes/oracoes.module.css";
 import { BadgeCategoria } from "@/components/BadgeCategoria";
+import { tagsExibidasNoCard } from "@/domain/destaques";
 import { hrefOracao } from "@/lib/hrefOracoes";
 
 const cardsPorPagina = 4;
@@ -78,7 +79,7 @@ export function CarrosselOracoesRelacionadas({
                     </p>
                   ) : null}
                   <p className="d-flex flex-wrap gap-1 mb-3">
-                    {oracao.tags.slice(0, 4).map((tag, indice) => (
+                    {tagsExibidasNoCard(oracao.tags, 4).map((tag, indice) => (
                       <BadgeCategoria key={`${tag}-${indice}`} tag={tag} />
                     ))}
                   </p>
