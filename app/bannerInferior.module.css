@@ -1,0 +1,60 @@
+.banner {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--cor-fundo-secundario);
+}
+
+.imagem {
+  position: relative;
+  aspect-ratio: 8 / 3;
+  overflow: hidden;
+}
+
+.imagem :global(img) {
+  object-position: left center;
+}
+
+.imagem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--cor-fundo-secundario) 0%,
+    transparent 40%
+  );
+}
+
+.texto {
+  position: relative;
+  z-index: 1;
+  padding: var(--espaco-xl) var(--espaco-lg) var(--espaco-2xl);
+}
+
+@media (min-width: 992px) {
+  .imagem {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 62%;
+    aspect-ratio: auto;
+  }
+
+  .imagem::after {
+    background: linear-gradient(
+      to left,
+      var(--cor-fundo-secundario) 0%,
+      transparent 40%
+    );
+  }
+
+  .texto {
+    width: 52%;
+    margin-left: auto;
+    padding: var(--espaco-2xl) var(--espaco-3xl) var(--espaco-2xl)
+      var(--espaco-2xl);
+  }
+}

@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import bannerInferior from "@/app/bannerInferior.module.css";
 import { CarrosselBannerInicial } from "@/components/CarrosselBannerInicial";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
@@ -120,27 +122,29 @@ export default async function Home() {
         </section>
 
         <section className="container py-5" aria-labelledby="chamada-titulo">
-          {/* !!! ESTÁTICO — chamada institucional provisória !!! */}
-          <div className="row g-0 border rounded overflow-hidden">
-            <div className="col-12 col-lg-6">
-              <div
-                className="ratio ratio-16x9 bg-secondary-subtle h-100"
-                aria-hidden="true"
+          <div
+            className={`${bannerInferior.banner} bg-light rounded overflow-hidden`}
+          >
+            <div className={bannerInferior.imagem}>
+              <Image
+                src="/images/biblia-aberta.png"
+                alt=""
+                fill
+                className="object-fit-cover"
+                sizes="(min-width: 992px) 62vw, 100vw"
               />
             </div>
-            <div className="col-12 col-lg-6 bg-light">
-              <div className="p-4 p-lg-5">
-                <h2 id="chamada-titulo" className="h4">
-                  Aprofunde sua vida de oração
-                </h2>
-                <p>
-                  Descubra orações tradicionais, conheça novos santos e
-                  fortaleça sua caminhada de fé.
-                </p>
-                <Link href="/oracoes" className="btn btn-primary btn-ver-oracoes">
-                  Ver todas as orações
-                </Link>
-              </div>
+            <div className={bannerInferior.texto}>
+              <h2 id="chamada-titulo" className="h4">
+                APROFUNDE SUA VIDA DE ORAÇÃO
+              </h2>
+              <p>
+                Descubra orações tradicionais, conheça novos santos e
+                fortaleça sua caminhada de fé.
+              </p>
+              <Link href="/oracoes" className="btn btn-primary btn-ver-oracoes">
+                Ver todas as orações
+              </Link>
             </div>
           </div>
         </section>
