@@ -90,7 +90,7 @@ export default function PaginaNaoEncontrada() {
                   <i className="bi bi-house-door me-2" aria-hidden="true" />
                   Voltar para o início
                 </Link>
-                <Link href="/oracoes" className="btn btn-outline-primary">
+                <Link href="/oracoes" className="btn btn-outline-primary btn-ver-oracoes">
                   <i className="bi bi-book me-2" aria-hidden="true" />
                   Ver todas as orações
                 </Link>

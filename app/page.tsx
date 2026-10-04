@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { CarrosselBannerInicial } from "@/components/CarrosselBannerInicial";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { Rodape } from "@/components/Rodape";
@@ -9,7 +9,6 @@ import {
   listarOracoesRecentes,
 } from "@/domain/oracoes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
-import styles from "./bannerInicial.module.css";
 
 export default async function Home() {
   const paraCarrossel = (
@@ -79,40 +78,7 @@ export default async function Home() {
       </header>
 
       <main>
-        <section
-          className={`${styles.banner} bg-light border-bottom`}
-          aria-labelledby="hero-titulo"
-        >
-          <div className={`container py-5 ${styles.limite}`}>
-            <div className="row align-items-center g-4">
-              <div className={`col-12 col-lg-7 ${styles.texto}`}>
-                {/* !!! ESTÁTICO — texto provisório da apresentação !!! */}
-                <h1 id="hero-titulo" className="display-6 fw-semibold">
-                  “...o culto mesmo a Maria nos conduz a Cristo.”
-                </h1>
-                <p className="text-secondary mb-4">— São João Paulo II, Homilia em Saragoça, 6 de novembro de 1982.</p>
-                <p className="lead mb-2">
-                  Encontre orações para todos os momentos da sua vida.
-                </p>
-                <p className="mb-4">Reze, medite e fortaleça sua fé.</p>
-                <Link href="/oracoes" className="btn btn-primary">
-                  Ver todas as orações
-                </Link>
-              </div>
-              <div className="col-12 col-lg-5">
-                <div className={styles.imagem}>
-                  <Image
-                    src="/images/nossa-senhora-das-dores.jpg"
-                    alt="Nossa Senhora das Dores"
-                    fill
-                    className="object-fit-cover"
-                    sizes="(min-width: 992px) 46vw, 100vw"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <CarrosselBannerInicial />
 
         <section className="container py-5" aria-labelledby="destaque-titulo">
           <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center gap-2 mb-4">
@@ -171,7 +137,7 @@ export default async function Home() {
                   Descubra orações tradicionais, conheça novos santos e
                   fortaleça sua caminhada de fé.
                 </p>
-                <Link href="/oracoes" className="btn btn-primary">
+                <Link href="/oracoes" className="btn btn-primary btn-ver-oracoes">
                   Ver todas as orações
                 </Link>
               </div>

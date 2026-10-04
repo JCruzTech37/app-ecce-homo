@@ -317,7 +317,7 @@ export default async function PaginaOracao(
             >
               Orações relacionadas
             </h2>
-            <Link href="/oracoes" className="btn btn-outline-primary btn-sm">
+            <Link href="/oracoes" className="btn btn-outline-primary btn-ver-oracoes">
               Ver todas as orações
             </Link>
           </div>

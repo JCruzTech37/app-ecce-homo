@@ -163,6 +163,12 @@ a:focus {
   box-shadow: none;
 }
 
+.btn.btn-ver-oracoes {
+  min-height: 44px;
+  padding: var(--espaco-sm) var(--espaco-lg);
+  font-size: var(--tipo-texto-tamanho);
+}
+
 .badge {
   font-family: var(--badge-fonte);
   font-size: var(--badge-tamanho-maximo);
