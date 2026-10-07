@@ -4,6 +4,7 @@ import imagemBanner from "../../docs/layout/banner-sobre-o-que-e-a-verdade.png";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
+import stylesBomJesus from "@/app/sobre/imagemBomJesus.module.css";
 
 function Placeholder({ texto }: { texto: string }) {
   return (
@@ -114,7 +115,14 @@ export default function PaginaSobre() {
               </p>
             </div>
             <div className="col-12 col-lg-5">
-              <Placeholder texto="[PLACEHOLDER — IMAGEM DO SENHOR BOM JESUS DOS PERDÕES]" />
+              <Image
+                src="/images/senhor-bom-jesus.jpeg"
+                alt="Senhor Bom Jesus dos Perdões"
+                width={447}
+                height={447}
+                sizes="(min-width: 992px) 42vw, 100vw"
+                className={stylesBomJesus.imagem}
+              />
               <h3 className="h6 mt-3">O Bom Jesus dos Perdões</h3>
               <p className="small text-secondary mb-0">
                 Espaço reservado para a imagem do Senhor Bom Jesus dos Perdões,
