@@ -44,12 +44,36 @@
     bottom: 0;
     right: calc(var(--bs-gutter-x) * 0.5);
     width: calc(5 / 12 * (100% - var(--bs-gutter-x)));
-    aspect-ratio: auto;
+    height: 100%;
+    aspect-ratio: unset;
   }
 
   .imagemEsquerda {
     right: auto;
     left: calc(var(--bs-gutter-x) * 0.5);
+  }
+
+  /* A pintura em fluxo define a altura do banner. A proporção é a do Ecce Homo,
+     então a caixa cresce com a largura do monitor e a posição da imagem não muda. */
+  .painelReferencia .limite {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .painelReferencia .limite::before {
+    content: "";
+    display: block;
+    width: calc(5 / 12 * 100%);
+    margin-left: auto;
+    aspect-ratio: 736 / 920;
+  }
+
+  .painelReferencia :global(.row) {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    margin: 0;
+    align-items: center;
   }
 }
 
@@ -61,7 +85,12 @@
   );
 }
 
+.imagem :global(img),
 .imagemEsquerda :global(img) {
+  object-position: center top;
+}
+
+.ecce :global(img) {
   object-position: center top;
 }
 
@@ -73,19 +102,101 @@
   align-self: center;
 }
 
-.apoio {
-  font-family: var(--tipo-texto-auxiliar-fonte);
-  font-size: var(--tipo-texto-auxiliar-tamanho);
-  font-weight: var(--tipo-texto-auxiliar-peso);
+.composicao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-.nome {
-  margin: 0 0 var(--espaco-xs);
-  font-family: var(--fonte-texto);
+.apoio {
+  margin: 0;
+  font-family: var(--tipo-texto-fonte);
+  font-size: var(--tipo-texto-secundario-tamanho);
+  font-weight: var(--tipo-texto-auxiliar-peso);
+  letter-spacing: 0.16em;
+}
+
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+  width: min(22rem, 78%);
+  margin: var(--espaco-md) 0 0;
+  color: var(--cor-destaque);
+}
+
+.divisorLinha {
+  flex: 1 1 auto;
+  height: 1px;
+  background: currentColor;
+}
+
+.divisorFlor {
+  display: block;
+  width: 1.05rem;
+  height: 1.4rem;
+  flex: 0 0 auto;
+}
+
+.marca {
+  position: relative;
+  display: block;
+  width: min(22rem, 100%);
+  margin: var(--espaco-md) 0 var(--espaco-lg);
+  line-height: 0;
+  isolation: isolate;
+}
+
+.marca::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 42%;
+  width: 46%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #fff 14%,
+    var(--cor-fundo-secundario) 72%
+  );
+}
+
+.marcaImagem {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pergunta {
+  max-width: 36rem;
+  margin: 0 0 var(--espaco-lg);
+  font-family: var(--tipo-h4-fonte);
   font-size: var(--tipo-h1-tamanho);
-  font-weight: var(--peso-semibold);
-  color: var(--cor-primaria);
-  line-height: 1.1;
+  font-weight: var(--tipo-texto-peso);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--cor-texto);
+}
+
+.perguntaRef {
+  white-space: nowrap;
+}
+
+.composicao :global(.btn.btn-ver-oracoes) {
+  min-width: 17rem;
+  padding: var(--espaco-md) var(--espaco-xl);
+}
+
+.seta {
+  margin-left: var(--espaco-sm);
 }
 
 .indicadores {
@@ -214,5 +325,19 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .painelSobreposto :global(.row),
+  .ecce :global(.row) {
+    height: 100%;
+    align-items: center;
+  }
+
+  .apoio {
+    letter-spacing: 0.32em;
+  }
+
+  .marca {
+    width: 88%;
   }
 }

@@ -19,9 +19,6 @@ export async function Rodape() {
         <div className="row g-4">
           <div className="col-12 col-md-6 col-lg-3">
             <LogoRodape />
-            <p className="small text-uppercase text-secondary">
-              Ad maiorem Dei gloriam
-            </p>
             <p className="small mb-0">
               {'"Jesus Cristo é o Senhor!, para a glória de Deus Pai."'} <br />
               {"Filipenses 2:11"}

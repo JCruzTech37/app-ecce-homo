@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { CompartilharOracao } from "@/components/CompartilharOracao";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { LogoMarca } from "@/components/LogoMarca";
 import {
   categoriasPorQuantidade,
   categoriasSugeridas,
@@ -127,12 +128,7 @@ export default async function PaginaOracao(
           <div className="row align-items-center g-3">
             <div className="col-12 col-lg-3">
               <Link href="/" className="text-decoration-none">
-                <span className="d-block fs-4 fw-semibold text-primary lh-1">
-                  Ecce Homo
-                </span>
-                <span className="d-block small text-secondary text-uppercase">
-                  Ad maiorem Dei gloriam
-                </span>
+                <LogoMarca priority />
               </Link>
             </div>
             <nav

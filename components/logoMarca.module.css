@@ -1,0 +1,7 @@
+.logo {
+  display: block;
+  width: 12.5rem;
+  max-width: 100%;
+  height: auto;
+  mix-blend-mode: darken;
+}

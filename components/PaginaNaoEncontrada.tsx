@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
 
 export default function PaginaNaoEncontrada() {
@@ -10,12 +11,7 @@ export default function PaginaNaoEncontrada() {
           <div className="row align-items-center g-3">
             <div className="col-12 col-lg-3">
               <Link href="/" className="text-decoration-none">
-                <span className="d-block fs-4 fw-semibold text-primary lh-1">
-                  Ecce Homo
-                </span>
-                <span className="d-block small text-secondary text-uppercase">
-                  Ad maiorem Dei gloriam
-                </span>
+                <LogoMarca priority />
               </Link>
             </div>
 

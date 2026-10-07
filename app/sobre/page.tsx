@@ -1,5 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
+import imagemBanner from "../../docs/layout/banner-sobre-o-que-e-a-verdade.png";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
 
 function Placeholder({ texto }: { texto: string }) {
@@ -20,12 +23,7 @@ export default function PaginaSobre() {
           <div className="row align-items-center g-3">
             <div className="col-12 col-lg-3">
               <Link href="/" className="text-decoration-none">
-                <span className="d-block fs-4 fw-semibold text-primary lh-1">
-                  Ecce Homo
-                </span>
-                <span className="d-block small text-secondary text-uppercase">
-                  Ad maiorem Dei gloriam
-                </span>
+                <LogoMarca priority />
               </Link>
             </div>
             <nav
@@ -68,26 +66,19 @@ export default function PaginaSobre() {
           aria-labelledby="pilatos-titulo"
         >
           <div className="container py-5">
-            <div className="row g-4 align-items-start">
-              <div className="col-12 col-lg-8">
-                <p className="small text-uppercase text-secondary mb-2">
-                  Sobre o Ecce Homo
-                </p>
-                <h1 id="pilatos-titulo" className="display-6 fw-semibold">
-                  Jesus diante de Pilatos
-                </h1>
-                <p className="fw-semibold">João 18, 33–38</p>
-                <p className="border rounded bg-white p-3 mb-4">
-                  [PLACEHOLDER — TRECHO BÍBLICO JOÃO 18, 33–38]
-                </p>
-                <p className="h4 fst-italic text-primary border-start border-primary border-3 ps-3 mb-0">
-                  O que é a verdade?
-                </p>
-              </div>
-              <div className="col-12 col-lg-4">
-                <Placeholder texto="[PLACEHOLDER — IMAGEM JESUS DIANTE DE PILATOS]" />
-              </div>
-            </div>
+            <p className="small text-uppercase text-secondary mb-2">
+              Sobre o Ecce Homo
+            </p>
+            <h1 id="pilatos-titulo" className="mb-4">
+              Jesus diante de Pilatos
+            </h1>
+            <Image
+              src={imagemBanner}
+              alt="Jesus diante de Pilatos"
+              priority
+              sizes="(min-width: 1200px) 1140px, 100vw"
+              className="d-block w-100 h-auto"
+            />
           </div>
         </section>
 
