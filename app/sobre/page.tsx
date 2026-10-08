@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import imagemBanner from "../../docs/layout/banner-sobre-o-que-e-a-verdade.png";
+import { CitacaoBiblica } from "@/components/CitacaoBiblica";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
@@ -155,16 +156,11 @@ export default function PaginaSobre() {
               </p>
             </div>
             <div className="col-12 col-lg-5">
-              <blockquote className="bg-light rounded p-4 mb-0">
-                <i
-                  className="bi bi-quote fs-3 text-secondary"
-                  aria-hidden="true"
-                />
-                <p className="fst-italic mb-3">
-                  [PLACEHOLDER — TRECHO BÍBLICO 1PEDRO 3,15]
-                </p>
-                <footer className="blockquote-footer mb-0">1Pedro 3,15</footer>
-              </blockquote>
+              <CitacaoBiblica referencia="1Pedro 3,15">
+                Antes, santificai o Senhor Jesus Cristo em vossos corações e
+                estai sempre prontos a dar a razão da vossa esperança a todo
+                aquele que a pedir.
+              </CitacaoBiblica>
             </div>
           </div>
         </section>

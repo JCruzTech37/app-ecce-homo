@@ -1,0 +1,55 @@
+.citacao {
+  position: relative;
+  padding: var(--espaco-3xl);
+}
+
+.citacao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-color: var(--cor-fundo-secundario);
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--espaco-xl),
+      #000 calc(100% - var(--espaco-xl)),
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--espaco-xl),
+      #000 calc(100% - var(--espaco-xl)),
+      transparent 100%
+    );
+  mask-composite: intersect;
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--espaco-xl),
+      #000 calc(100% - var(--espaco-xl)),
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--espaco-xl),
+      #000 calc(100% - var(--espaco-xl)),
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+}
+
+.citacao > * {
+  position: relative;
+  z-index: 1;
+}
