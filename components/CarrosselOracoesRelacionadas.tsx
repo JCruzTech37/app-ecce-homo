@@ -1,31 +1,60 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import styles from "@/app/oracoes/oracoes.module.css";
-import { BadgeCategoria } from "@/components/BadgeCategoria";
-import { tagsExibidasNoCard } from "@/domain/destaques";
+import { useState, useSyncExternalStore } from "react";
+import carrossel from "@/components/carrosselOracoesRelacionadas.module.css";
+import { CardOracao } from "@/components/CardOracao";
 import { hrefOracao } from "@/lib/hrefOracoes";
 
-const cardsPorPagina = 4;
+const consultaQuatro = "(min-width: 992px)";
+const consultaTres = "(min-width: 768px)";
+const consultaDois = "(min-width: 576px)";
+
+function cardsPorPaginaNoCliente(): number {
+  if (window.matchMedia(consultaQuatro).matches) {
+    return 4;
+  }
+
+  if (window.matchMedia(consultaTres).matches) {
+    return 3;
+  }
+
+  if (window.matchMedia(consultaDois).matches) {
+    return 2;
+  }
+
+  return 1;
+}
+
+function inscreverCardsPorPagina(atualizar: () => void) {
+  const consultas = [consultaQuatro, consultaTres, consultaDois].map(
+    (consulta) => window.matchMedia(consulta),
+  );
+
+  for (const consulta of consultas) {
+    consulta.addEventListener("change", atualizar);
+  }
+
+  return () => {
+    for (const consulta of consultas) {
+      consulta.removeEventListener("change", atualizar);
+    }
+  };
+}
+
+function useCardsPorPagina() {
+  return useSyncExternalStore(
+    inscreverCardsPorPagina,
+    cardsPorPaginaNoCliente,
+    () => 4,
+  );
+}
 
 export type OracaoDoCarrossel = {
   slug: string;
   titulo: string;
   descricao?: string;
-  imagemVertical: string;
-  textoAlternativo: string;
   tags: string[];
 };
-
-function caminhoImagemPublica(referencia: string): string {
-  if (referencia.startsWith("public/")) {
-    return `/${referencia.slice("public/".length)}`;
-  }
-
-  return referencia;
-}
 
 export function CarrosselOracoesRelacionadas({
   oracoes,
@@ -41,10 +70,25 @@ export function CarrosselOracoesRelacionadas({
   rotuloNavegacao?: string;
 }) {
   const [pagina, setPagina] = useState(0);
+  const [direcao, setDirecao] = useState<"proxima" | "anterior" | null>(null);
+  const [ciclo, setCiclo] = useState(0);
+  const cardsPorPagina = useCardsPorPagina();
   const totalPaginas = Math.ceil(oracoes.length / cardsPorPagina);
-  const paginaVisivel = totalPaginas === 0 ? 0 : pagina % totalPaginas;
+  const paginaVisivel =
+    totalPaginas === 0 ? 0 : Math.min(pagina, totalPaginas - 1);
   const inicio = paginaVisivel * cardsPorPagina;
   const visiveis = oracoes.slice(inicio, inicio + cardsPorPagina);
+
+  function mudarPagina(delta: number) {
+    setDirecao(delta > 0 ? "proxima" : "anterior");
+    setCiclo((atual) => atual + 1);
+    setPagina((atual) => {
+      const limite = Math.ceil(oracoes.length / cardsPorPagina);
+      const atualVisivel = limite === 0 ? 0 : Math.min(atual, limite - 1);
+
+      return (atualVisivel + delta + limite) % limite;
+    });
+  }
 
   if (visiveis.length === 0) {
     return null;
@@ -52,45 +96,33 @@ export function CarrosselOracoesRelacionadas({
 
   return (
     <>
-      <div className="row g-4">
-        {visiveis.map((oracao) => {
-          const destino = hrefOracao(oracao.slug, { busca, ordem, categoria });
+      <div className={carrossel.troca}>
+        <div
+          key={ciclo}
+          className={`row g-4${direcao ? ` ${carrossel[direcao]}` : ""}`}
+        >
+          {visiveis.map((oracao) => {
+            const destino = hrefOracao(oracao.slug, {
+              busca,
+              ordem,
+              categoria,
+            });
 
-          return (
-            <div key={oracao.slug} className="col-12 col-sm-6 col-lg-3">
-              <article className="card h-100">
-                <Link
+            return (
+              <div
+                key={oracao.slug}
+                className="col-12 col-sm-6 col-md-4 col-lg-3"
+              >
+                <CardOracao
+                  titulo={oracao.titulo}
+                  descricao={oracao.descricao}
+                  tags={oracao.tags}
                   href={destino}
-                  className="ratio ratio-4x3 bg-secondary-subtle"
-                >
-                  <Image
-                    src={caminhoImagemPublica(oracao.imagemVertical)}
-                    alt={oracao.textoAlternativo}
-                    fill
-                    className="object-fit-cover"
-                    sizes="(min-width: 992px) 25vw, (min-width: 576px) 50vw, 100vw"
-                  />
-                </Link>
-                <div className="card-body d-flex flex-column">
-                  <h3 className="h6 card-title">{oracao.titulo}</h3>
-                  {oracao.descricao ? (
-                    <p className={`card-text small ${styles.descricao}`}>
-                      {oracao.descricao}
-                    </p>
-                  ) : null}
-                  <p className="d-flex flex-wrap gap-1 mb-3">
-                    {tagsExibidasNoCard(oracao.tags, 4).map((tag, indice) => (
-                      <BadgeCategoria key={`${tag}-${indice}`} tag={tag} />
-                    ))}
-                  </p>
-                  <Link href={destino} className="mt-auto">
-                    Ler oração
-                  </Link>
-                </div>
-              </article>
-            </div>
-          );
-        })}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
       {totalPaginas > 1 ? (
         <nav
@@ -101,7 +133,7 @@ export function CarrosselOracoesRelacionadas({
             type="button"
             className="btn btn-outline-primary btn-sm"
             onClick={() => {
-              setPagina((atual) => (atual - 1 + totalPaginas) % totalPaginas);
+              mudarPagina(-1);
             }}
           >
             Anterior
@@ -113,7 +145,7 @@ export function CarrosselOracoesRelacionadas({
             type="button"
             className="btn btn-outline-primary btn-sm"
             onClick={() => {
-              setPagina((atual) => (atual + 1) % totalPaginas);
+              mudarPagina(1);
             }}
           >
             Próxima

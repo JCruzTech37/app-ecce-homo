@@ -12,15 +12,7 @@ function texto(valor: unknown): valor is string {
   return typeof valor === "string";
 }
 
-function caminhoPublico(referencia: string): string {
-  if (referencia.startsWith("public/")) {
-    return `/${referencia.slice("public/".length)}`;
-  }
-
-  return referencia;
-}
-
-function interpretarOracao(valor: unknown, slug: string): Oracao | null {
+export function interpretarOracao(valor: unknown, slug: string): Oracao | null {
   if (!ehRegistro(valor)) {
     return null;
   }
@@ -30,8 +22,6 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
     valor.slug !== slug ||
     !texto(valor.titulo) ||
     !texto(valor.texto) ||
-    !texto(valor.imagemVertical) ||
-    !texto(valor.textoAlternativo) ||
     !texto(valor.jaculatoria) ||
     typeof valor.publicado !== "boolean" ||
     !texto(valor.createdAt) ||
@@ -68,8 +58,6 @@ function interpretarOracao(valor: unknown, slug: string): Oracao | null {
     titulo: valor.titulo,
     descricao: texto(valor.descricao) ? valor.descricao : undefined,
     texto: valor.texto,
-    imagemVertical: caminhoPublico(valor.imagemVertical),
-    textoAlternativo: valor.textoAlternativo,
     jaculatoria: valor.jaculatoria,
     fraseSanto: texto(valor.fraseSanto) ? valor.fraseSanto : undefined,
     fraseSantoAutor: texto(valor.fraseSantoAutor)

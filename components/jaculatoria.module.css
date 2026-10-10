@@ -1,0 +1,11 @@
+.bloco {
+  padding: var(--espaco-lg);
+  border-top: 3px solid var(--cor-destaque);
+  text-align: center;
+}
+
+.texto {
+  font-size: var(--tipo-texto-tamanho);
+  line-height: 1.5;
+  white-space: pre-line;
+}

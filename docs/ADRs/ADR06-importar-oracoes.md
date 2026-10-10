@@ -168,13 +168,13 @@ A exclusão de uma oração do Firestore deverá ser uma operação explícita e
 
 ## Imagens
 
-O campo `imagemVertical` continuará armazenando uma referência ao recurso de imagem conforme definido pelo modelo atual.
+As orações não exigem imagens individuais. `imagemVertical` deixou de fazer parte do modelo oficial, e `textoAlternativo` deixa de ser necessário quando descrevia apenas essa imagem.
 
-Neste estágio, as imagens permanecem no projeto em:
+Novos JSONs não devem declarar essas propriedades. O importador não as exige.
 
-`public/images/oracoes/`
+Um JSON antigo que ainda contenha os campos continua sendo importado. O script não apaga documentos nem remove campos de orações que não estejam no lote importado. Como a gravação substitui o documento pelo conteúdo do JSON, um arquivo que omita esses campos passa a ser gravado sem eles. A aplicação lê os dois formatos.
 
-O processo de importação não fará upload de imagens para o Firebase Storage.
+Imagens de banners e elementos institucionais permanecem no projeto e não fazem parte da importação de orações. O processo não faz upload para o Firebase Storage.
 
 ## Escopo
 

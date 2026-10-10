@@ -105,7 +105,6 @@ A página poderá apresentar:
 
 - título;
 - descrição curta;
-- imagem;
 - categorias/tags;
 - ordenação definida pelo domínio;
 - acesso à página individual.
@@ -131,9 +130,7 @@ Elementos funcionais previstos:
 - breadcrumb;
 - título;
 - texto da oração;
-- imagem vertical;
-- texto alternativo;
-- jaculatória;
+- jaculatória, como bloco de destaque textual;
 - frase complementar, quando existir;
 - autor da frase, quando existir;
 - compartilhamento;

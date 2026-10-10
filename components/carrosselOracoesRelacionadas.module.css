@@ -1,0 +1,49 @@
+.troca {
+  overflow: hidden;
+}
+
+.proxima,
+.anterior {
+  animation-duration: 0.4s;
+  animation-timing-function: ease;
+  animation-fill-mode: both;
+}
+
+.proxima {
+  animation-name: entrarPelaDireita;
+}
+
+.anterior {
+  animation-name: entrarPelaEsquerda;
+}
+
+@keyframes entrarPelaDireita {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes entrarPelaEsquerda {
+  from {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proxima,
+  .anterior {
+    animation: none;
+  }
+}

@@ -593,4 +593,6 @@ O componente define a área disponível, inclusive a proporção. A imagem ocupa
 
 Quando a proporção do arquivo for diferente da área reservada, o enquadramento corta o excedente. Não permanecem faixas vazias, cinzas ou de placeholder ao redor da imagem.
 
-Essa regra vale para banners, cards e demais blocos que reservam um espaço visual antes de receber a imagem.
+Essa regra vale para banners e demais blocos institucionais que reservam um espaço visual antes de receber a imagem.
+
+Cards e a página individual de oração não reservam imagem. A oração é apresentada pelo texto, e a jaculatória entra como bloco de destaque textual.

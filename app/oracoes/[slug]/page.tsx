@@ -1,9 +1,8 @@
-import type { CSSProperties } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { CompartilharOracao } from "@/components/CompartilharOracao";
+import { Jaculatoria } from "@/components/Jaculatoria";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
 import {
@@ -16,18 +15,6 @@ import { oracoesRelacionadas } from "@/domain/oracoesRelacionadas";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 import { Rodape } from "@/components/Rodape";
 import styles from "./descricao.module.css";
-
-const proporcaoRetrato = {
-  "--bs-aspect-ratio": "133.333%",
-} as CSSProperties;
-
-function caminhoImagemPublica(referencia: string): string {
-  if (referencia.startsWith("public/")) {
-    return `/${referencia.slice("public/".length)}`;
-  }
-
-  return referencia;
-}
 
 function textoParametro(
   valor: string | string[] | undefined,
@@ -109,8 +96,6 @@ export default async function PaginaOracao(
     slug: item.slug,
     titulo: item.titulo,
     descricao: item.descricao,
-    imagemVertical: item.imagemVertical,
-    textoAlternativo: item.textoAlternativo,
     tags: item.tags,
   }));
   const rotuloContexto = categoria
@@ -281,23 +266,7 @@ export default async function PaginaOracao(
             </article>
 
             <div className="col-12 col-lg-3 order-2 order-lg-3">
-              <div
-                className="ratio bg-secondary-subtle rounded-top overflow-hidden"
-                style={proporcaoRetrato}
-              >
-                <Image
-                  src={caminhoImagemPublica(oracao.imagemVertical)}
-                  alt={oracao.textoAlternativo}
-                  fill
-                  className="object-fit-cover"
-                  sizes="(min-width: 992px) 280px, 100vw"
-                />
-              </div>
-              <div className="bg-light border border-top-0 rounded-bottom text-center p-4">
-                <p className="small text-uppercase fw-semibold mb-0">
-                  {oracao.jaculatoria}
-                </p>
-              </div>
+              <Jaculatoria texto={oracao.jaculatoria} />
             </div>
           </div>
         </div>
@@ -313,7 +282,10 @@ export default async function PaginaOracao(
             >
               Orações relacionadas
             </h2>
-            <Link href="/oracoes" className="btn btn-outline-primary btn-ver-oracoes">
+            <Link
+              href="/oracoes"
+              className="btn btn-outline-primary btn-ver-oracoes"
+            >
               Ver todas as orações
             </Link>
           </div>

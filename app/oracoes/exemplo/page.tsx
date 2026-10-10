@@ -1,12 +1,8 @@
-import type { CSSProperties } from "react";
 import Link from "next/link";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
+import { Jaculatoria } from "@/components/Jaculatoria";
 import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
-
-const proporcaoRetrato = {
-  "--bs-aspect-ratio": "133.333%",
-} as CSSProperties;
 
 // !!! ESTÁTICO — futuramente virá do domínio/repository !!!
 const relacionadas = [
@@ -230,18 +226,8 @@ export default function PaginaOracaoExemplo() {
             </article>
 
             <div className="col-12 col-lg-3 order-2 order-lg-3">
-              {/* !!! ESTÁTICO — placeholder da imagem vertical !!! */}
-              <div
-                className="ratio bg-secondary-subtle rounded-top"
-                style={proporcaoRetrato}
-                aria-hidden="true"
-              />
               {/* !!! ESTÁTICO — jaculatória provisória !!! */}
-              <div className="bg-light border border-top-0 rounded-bottom text-center p-4">
-                <p className="small text-uppercase fw-semibold mb-0">
-                  Jaculatória provisória
-                </p>
-              </div>
+              <Jaculatoria texto="Jaculatória provisória" />
             </div>
           </div>
         </div>
@@ -257,7 +243,10 @@ export default function PaginaOracaoExemplo() {
             >
               Orações relacionadas
             </h2>
-            <Link href="/oracoes" className="btn btn-outline-primary btn-ver-oracoes">
+            <Link
+              href="/oracoes"
+              className="btn btn-outline-primary btn-ver-oracoes"
+            >
               Ver todas as orações
             </Link>
           </div>
@@ -266,11 +255,7 @@ export default function PaginaOracaoExemplo() {
             {relacionadas.map((oracao) => (
               <div key={oracao.titulo} className="col-12 col-sm-6 col-lg-3">
                 <article className="card h-100">
-                  <div
-                    className="ratio ratio-1x1 bg-secondary-subtle"
-                    aria-hidden="true"
-                  />
-                  <div className="card-body d-flex flex-column">
+                  <div className="card-body d-flex flex-column p-4">
                     <h3 className="h6 card-title">{oracao.titulo}</h3>
                     <p className="card-text small">{oracao.descricao}</p>
                     <p>

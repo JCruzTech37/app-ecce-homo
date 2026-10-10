@@ -42,7 +42,7 @@ function dataTexto(valor: unknown, campo: string): string {
   throw new Error(`Campo ${campo} inválido no documento de oração.`);
 }
 
-function interpretarOracao(valor: unknown): Oracao {
+export function interpretarOracao(valor: unknown): Oracao {
   if (!ehRegistro(valor)) {
     throw new Error("Documento de oração inválido.");
   }
@@ -52,8 +52,6 @@ function interpretarOracao(valor: unknown): Oracao {
     !texto(valor.slug) ||
     !texto(valor.titulo) ||
     !texto(valor.texto) ||
-    !texto(valor.imagemVertical) ||
-    !texto(valor.textoAlternativo) ||
     !texto(valor.jaculatoria) ||
     typeof valor.publicado !== "boolean" ||
     !Array.isArray(valor.tags) ||
@@ -68,8 +66,6 @@ function interpretarOracao(valor: unknown): Oracao {
     titulo: valor.titulo,
     descricao: textoOpcional(valor.descricao, "descricao"),
     texto: valor.texto,
-    imagemVertical: valor.imagemVertical,
-    textoAlternativo: valor.textoAlternativo,
     jaculatoria: valor.jaculatoria,
     fraseSanto: textoOpcional(valor.fraseSanto, "fraseSanto"),
     fraseSantoAutor: textoOpcional(valor.fraseSantoAutor, "fraseSantoAutor"),

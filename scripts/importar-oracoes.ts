@@ -1,6 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { obterFirestore } from "../lib/firebase/admin";
+import { conteudoEditorial } from "./conteudoOracao";
 
 const diretorio = path.join(process.cwd(), "data", "prayers");
 
@@ -45,18 +47,14 @@ function normalizar(valor: unknown): unknown {
     return Object.fromEntries(
       Object.keys(valor)
         .sort()
-        .map((chave) => [chave, normalizar((valor as Record<string, unknown>)[chave])]),
+        .map((chave) => [
+          chave,
+          normalizar((valor as Record<string, unknown>)[chave]),
+        ]),
     );
   }
 
   return valor;
-}
-
-function conteudoEditorial(oracao: Record<string, unknown>): Record<string, unknown> {
-  const conteudo = { ...oracao };
-  delete conteudo.createdAt;
-  delete conteudo.updatedAt;
-  return conteudo;
 }
 
 function createdAtPreservado(existente: unknown, agora: string): unknown {
@@ -145,8 +143,15 @@ async function main(): Promise<void> {
   console.log("divergencias", divergencias.length);
 }
 
-main().catch((erro: unknown) => {
-  const mensagem = erro instanceof Error ? erro.message : String(erro);
-  console.error(mensagem);
-  process.exitCode = 1;
-});
+const entrada = process.argv[1];
+const executadoComoScript =
+  entrada !== undefined &&
+  pathToFileURL(path.resolve(entrada)).href === import.meta.url;
+
+if (executadoComoScript) {
+  main().catch((erro: unknown) => {
+    const mensagem = erro instanceof Error ? erro.message : String(erro);
+    console.error(mensagem);
+    process.exitCode = 1;
+  });
+}

@@ -1,17 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCategoria } from "@/components/BadgeCategoria";
+import { CardOracao } from "@/components/CardOracao";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
 import styles from "./oracoes.module.css";
 import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
 import { PainelFiltrosOracoes } from "@/components/PainelFiltrosOracoes";
 import { categoriasPorQuantidade } from "@/domain/categoriasOracoes";
-import {
-  categoriaDestaque,
-  ehDestaque,
-  tagsExibidasNoCard,
-} from "@/domain/destaques";
+import { categoriaDestaque, ehDestaque } from "@/domain/destaques";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
 import { hrefOracao, hrefOracoes } from "@/lib/hrefOracoes";
 import type { Oracao } from "@/types/oracao";
@@ -19,14 +15,6 @@ import { Rodape } from "@/components/Rodape";
 
 const tamanhoPagina = 9;
 const tamanhoJanela = 5;
-
-function caminhoImagemPublica(referencia: string): string {
-  if (referencia.startsWith("public/")) {
-    return `/${referencia.slice("public/".length)}`;
-  }
-
-  return referencia;
-}
 
 function paginaSolicitada(
   valor: string | string[] | undefined,
@@ -361,43 +349,12 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
 
                     return (
                       <div key={oracao.id} className="col-12 col-md-6 col-lg-4">
-                        <article className="card h-100">
-                          <Link
-                            href={destino}
-                            className="ratio ratio-4x3 bg-secondary-subtle"
-                          >
-                            <Image
-                              src={caminhoImagemPublica(oracao.imagemVertical)}
-                              alt={oracao.textoAlternativo}
-                              fill
-                              className="object-fit-cover"
-                              sizes="(min-width: 992px) 280px, (min-width: 768px) 50vw, 100vw"
-                            />
-                          </Link>
-                          <div className="card-body d-flex flex-column">
-                            <h3 className="h6 card-title">{oracao.titulo}</h3>
-                            {oracao.descricao ? (
-                              <p
-                                className={`card-text small ${styles.descricao}`}
-                              >
-                                {oracao.descricao}
-                              </p>
-                            ) : null}
-                            <p className="d-flex flex-wrap gap-1 mb-3">
-                              {tagsExibidasNoCard(oracao.tags, 4).map(
-                                (tag, indice) => (
-                                  <BadgeCategoria
-                                    key={`${tag}-${indice}`}
-                                    tag={tag}
-                                  />
-                                ),
-                              )}
-                            </p>
-                            <Link href={destino} className="mt-auto">
-                              Ler oração
-                            </Link>
-                          </div>
-                        </article>
+                        <CardOracao
+                          titulo={oracao.titulo}
+                          descricao={oracao.descricao}
+                          tags={oracao.tags}
+                          href={destino}
+                        />
                       </div>
                     );
                   })}

@@ -101,7 +101,7 @@ buscarOracao()
 listarOracoes()
 oracaoPublicada
 fraseSanto
-imagemVertical
+jaculatoria
 ```
 
 em vez de:

@@ -21,8 +21,6 @@ export default async function Home() {
       slug: oracao.slug,
       titulo: oracao.titulo,
       descricao: oracao.descricao,
-      imagemVertical: oracao.imagemVertical,
-      textoAlternativo: oracao.textoAlternativo,
       tags: oracao.tags,
     }));
   const destaques = paraCarrossel(await listarOracoesEmDestaque());
@@ -135,8 +133,8 @@ export default async function Home() {
                 APROFUNDE SUA VIDA DE ORAÇÃO
               </h2>
               <p>
-                Descubra orações tradicionais, conheça novos santos e
-                fortaleça sua caminhada de fé.
+                Descubra orações tradicionais, conheça novos santos e fortaleça
+                sua caminhada de fé.
               </p>
               <Link href="/oracoes" className="btn btn-primary btn-ver-oracoes">
                 Ver todas as orações

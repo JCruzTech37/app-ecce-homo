@@ -159,45 +159,31 @@ A separação entre conteúdo e apresentação deve ser preservada.
 
 Esses campos representam informações editoriais associadas à oração que serão utilizadas pelos componentes da página.
 
-## 5.1 `imagemVertical` — obrigatório
+## 5.1 Imagens individuais — fora do modelo
 
-Referência da imagem principal vertical associada à oração.
+As orações não exigem e não utilizam imagens individuais.
 
-```json
-"imagemVertical": "/images/oracoes/salve-rainha.webp"
-```
+`imagemVertical` deixou de fazer parte do modelo oficial. `textoAlternativo` também deixa de ser necessário, porque sua única finalidade era descrever a imagem da oração.
 
-A imagem será utilizada principalmente na apresentação desktop da oração.
+Novos JSONs não devem declarar essas propriedades. Não há campo substituto de imagem.
 
-O campo armazena uma referência ao recurso, não os dados binários da imagem.
+Documentos antigos que ainda contenham esses campos continuam válidos para leitura e importação. A aplicação ignora os campos e não os exige. A ausência deles não invalida a oração.
 
-## 5.2 `textoAlternativo` — obrigatório
+Imagens de banners e elementos institucionais do site permanecem permitidas e independentes do modelo de oração.
 
-Texto alternativo da imagem principal.
+## 5.2 `jaculatoria` — obrigatório
 
-```json
-"textoAlternativo": "Nossa Senhora coroada, com as mãos postas em oração"
-```
-
-Objetivos:
-
-- acessibilidade;
-- descrição semântica da imagem;
-- utilização pelo atributo `alt` do elemento `<img>`.
-
-O texto deve descrever objetivamente o conteúdo visual relevante da imagem.
-
-## 5.3 `jaculatoria` — obrigatório
-
-Texto curto associado à imagem principal, apresentado pelo componente visual da oração.
+Texto curto da oração, apresentado como bloco de destaque textual na página individual.
 
 ```json
 "jaculatoria": "Santa Maria, Mãe de Deus, rogai por nós."
 ```
 
-A apresentação desse conteúdo pertence ao componente React. O JSON deve armazenar somente o texto.
+A jaculatória ocupa a posição em que a imagem e o texto associado apareciam. Não é citação de santo: não possui autor nem atribuição de fonte.
 
-## 5.4 `fraseSanto` — opcional
+A apresentação pertence ao componente React. O JSON deve armazenar somente o texto.
+
+## 5.3 `fraseSanto` — opcional
 
 Frase, oração ou trecho atribuído a um santo ou outra fonte religiosa que acompanhe visualmente a oração.
 
@@ -207,7 +193,7 @@ Frase, oração ou trecho atribuído a um santo ou outra fonte religiosa que aco
 
 O campo é opcional porque nem toda oração necessariamente terá uma frase complementar.
 
-## 5.5 `fraseSantoAutor` — opcional
+## 5.4 `fraseSantoAutor` — opcional
 
 Autor da `fraseSanto`.
 
@@ -387,9 +373,6 @@ Essa decisão evita duplicação de conteúdo e permite alterar elementos globai
 
   "texto": "Salve, Rainha, Mãe de misericórdia,\nvida, doçura e esperança nossa, salve!\n\nA vós bradamos, os degredados filhos de Eva;\na vós suspiramos, gemendo e chorando\nneste vale de lágrimas.\n\nEia, pois, advogada nossa,\nesses vossos olhos misericordiosos a nós volvei;\ne depois deste desterro, mostrai-nos Jesus,\nbendito fruto do vosso ventre.\n\nÓ clemente, ó piedosa, ó doce sempre Virgem Maria!\n\nR. Rogai por nós, Santa Mãe de Deus,\npara que sejamos dignos das promessas de Cristo.\n\nAmém.",
 
-  "imagemVertical": "/images/oracoes/salve-rainha.webp",
-  "textoAlternativo": "Nossa Senhora coroada, com as mãos postas em oração",
-
   "jaculatoria": "Santa Maria, Mãe de Deus, rogai por nós.",
 
   "fraseSanto": "Nunca se ouviu dizer que algum daqueles que tenha recorrido à vossa proteção, implorado a vossa assistência e reclamado o vosso socorro tenha sido abandonado.",
@@ -422,9 +405,7 @@ Essa decisão evita duplicação de conteúdo e permite alterar elementos globai
 | `titulo` | Sim | Nome da oração |
 | `descricao` | Não | Resumo curto |
 | `texto` | Sim | Texto integral |
-| `imagemVertical` | Sim | Imagem principal |
-| `textoAlternativo` | Sim | Acessibilidade da imagem |
-| `jaculatoria` | Sim | Texto associado à imagem |
+| `jaculatoria` | Sim | Bloco de destaque textual |
 | `fraseSanto` | Não | Frase/trecho complementar |
 | `fraseSantoAutor` | Não | Autor da frase |
 | `tags` | Sim | Classificação |
@@ -445,9 +426,8 @@ O modelo deverá ser validado para garantir, no mínimo:
 - `slug` único;
 - `titulo` preenchido;
 - `texto` preenchido;
-- `imagemVertical` preenchida;
-- `textoAlternativo` preenchido;
 - `jaculatoria` preenchida;
+- `imagemVertical` e `textoAlternativo` ausentes nos novos JSONs e ignorados quando ainda existirem em documentos antigos;
 - `tags` existente e contendo identificadores válidos;
 - `publicado` booleano;
 - `createdAt` em formato válido;
@@ -522,7 +502,7 @@ O modelo será considerado adequado para a V1 quando for possível:
 3. Exibir a oração em listas e cards.
 4. Classificar uma oração em múltiplas tags.
 5. Selecionar orações por tag.
-6. Exibir imagem e texto alternativo.
+6. Exibir a jaculatória como bloco de destaque textual, sem imagem individual.
 7. Exibir ou ocultar a frase complementar de santo.
 8. Controlar se a oração está publicada.
 9. Gerar metadados SEO automaticamente quando os campos específicos não forem informados.
