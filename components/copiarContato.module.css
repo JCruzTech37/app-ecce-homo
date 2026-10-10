@@ -1,0 +1,9 @@
+.email {
+  display: block;
+  margin-bottom: var(--espaco-md);
+  font-family: var(--tipo-texto-fonte);
+  font-size: var(--tipo-h2-tamanho);
+  font-weight: var(--tipo-texto-peso);
+  color: var(--cor-texto);
+  text-decoration: none;
+}

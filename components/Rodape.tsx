@@ -86,10 +86,10 @@ export async function Rodape() {
             © 2026 Ecce Homo. Todos os direitos reservados.
           </p>
           <nav aria-label="Informações legais" className="d-flex gap-3">
-            <Link href="/404" className="link-secondary small">
+            <Link href="/privacidade" className="link-secondary small">
               Política de Privacidade
             </Link>
-            <Link href="/404" className="link-secondary small">
+            <Link href="/termos-de-uso" className="link-secondary small">
               Termos de Uso
             </Link>
           </nav>

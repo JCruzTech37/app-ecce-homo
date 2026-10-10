@@ -256,10 +256,19 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
       </header>
 
       <main>
-        <section className="bg-light border-bottom">
-          <div className="container py-4">
-            <div className="row align-items-center g-4">
-              <div className="col-12 col-lg-7">
+        <section className="border-bottom">
+          <div className="container">
+            <div className={styles.banner}>
+              <Image
+                src="/images/virgem-maria-em-oracao.png"
+                alt=""
+                width={1998}
+                height={787}
+                priority
+                sizes="(min-width: 1400px) 1296px, (min-width: 1200px) 1116px, (min-width: 992px) 936px, 100vw"
+                className={styles.imagem}
+              />
+              <div className={styles.texto}>
                 <nav aria-label="Trilha">
                   <ol className="breadcrumb mb-3">
                     <li className="breadcrumb-item">
@@ -283,13 +292,6 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                   medite e fortaleça sua fé com as mais belas orações da
                   tradição católica.
                 </p>
-              </div>
-              <div className="col-12 col-lg-5">
-                {/* !!! ESTÁTICO — placeholder da imagem de abertura !!! */}
-                <div
-                  className="ratio ratio-16x9 bg-body-secondary rounded"
-                  aria-hidden="true"
-                />
               </div>
             </div>
           </div>
@@ -382,12 +384,14 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                               </p>
                             ) : null}
                             <p className="d-flex flex-wrap gap-1 mb-3">
-                              {tagsExibidasNoCard(oracao.tags, 4).map((tag, indice) => (
-                                <BadgeCategoria
-                                  key={`${tag}-${indice}`}
-                                  tag={tag}
-                                />
-                              ))}
+                              {tagsExibidasNoCard(oracao.tags, 4).map(
+                                (tag, indice) => (
+                                  <BadgeCategoria
+                                    key={`${tag}-${indice}`}
+                                    tag={tag}
+                                  />
+                                ),
+                              )}
                             </p>
                             <Link href={destino} className="mt-auto">
                               Ler oração

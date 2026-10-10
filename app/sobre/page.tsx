@@ -2,20 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import imagemBanner from "../../docs/layout/banner-sobre-o-que-e-a-verdade.png";
 import { CitacaoBiblica } from "@/components/CitacaoBiblica";
+import { CopiarContato } from "@/components/CopiarContato";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
 import { Rodape } from "@/components/Rodape";
 import stylesBomJesus from "@/app/sobre/imagemBomJesus.module.css";
-
-function Placeholder({ texto }: { texto: string }) {
-  return (
-    <div className="ratio ratio-4x3 bg-secondary-subtle rounded">
-      <p className="d-flex align-items-center justify-content-center text-center text-secondary small p-3 mb-0">
-        {texto}
-      </p>
-    </div>
-  );
-}
 
 export default function PaginaSobre() {
   return (
@@ -88,7 +79,7 @@ export default function PaginaSobre() {
           className="container py-5 border-bottom"
           aria-labelledby="o-que-e"
         >
-          <div className="row g-4 align-items-start">
+          <div className="row g-4 align-items-center">
             <div className="col-12 col-lg-7">
               <h2
                 id="o-que-e"
@@ -137,7 +128,14 @@ export default function PaginaSobre() {
           className="container py-5 border-bottom"
           aria-labelledby="proposito"
         >
-          <div className="row g-4 align-items-start">
+          <div className="row g-4 align-items-center">
+            <div className="col-12 col-lg-5">
+              <CitacaoBiblica referencia="1Pedro 3,15">
+                Antes, santificai o Senhor Jesus Cristo em vossos corações e
+                estai sempre prontos a dar a razão da vossa esperança a todo
+                aquele que a pedir.
+              </CitacaoBiblica>
+            </div>
             <div className="col-12 col-lg-7">
               <h2
                 id="proposito"
@@ -155,73 +153,6 @@ export default function PaginaSobre() {
                 conhecimento da fé católica.
               </p>
             </div>
-            <div className="col-12 col-lg-5">
-              <CitacaoBiblica referencia="1Pedro 3,15">
-                Antes, santificai o Senhor Jesus Cristo em vossos corações e
-                estai sempre prontos a dar a razão da vossa esperança a todo
-                aquele que a pedir.
-              </CitacaoBiblica>
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="container py-5 border-bottom"
-          aria-labelledby="pertence"
-        >
-          <h2
-            id="pertence"
-            className="h4 border-start border-primary border-3 ps-2"
-          >
-            3. O Ecce Homo pertence a alguma paróquia, comunidade ou movimento?
-          </h2>
-          <p>
-            O Ecce Homo é um projeto independente. Não é o site oficial de uma
-            paróquia, comunidade ou movimento.
-          </p>
-          <p className="mb-0">
-            Seu criador participa da vida de fé e frequenta o Santuário do
-            Senhor Bom Jesus dos Perdões, em Bom Jesus dos Perdões, São Paulo. O
-            nome do site é uma homenagem inspirada na imagem do Santuário. O
-            projeto não representa oficialmente o Santuário nem a paróquia. É
-            uma demonstração pessoal de gratidão e devoção.
-          </p>
-        </section>
-
-        <section
-          className="container py-5 border-bottom"
-          aria-labelledby="quem-mantem"
-        >
-          <h2
-            id="quem-mantem"
-            className="h4 border-start border-primary border-3 ps-2"
-          >
-            4. Quem mantém o site Ecce Homo?
-          </h2>
-          <p>
-            O Ecce Homo é uma iniciativa independente, criado e desenvolvido
-            pelo seu próprio desenvolvedor. Há uma motivação pessoal ligada a
-            uma promessa feita à Virgem Maria: utilizar conhecimentos de
-            tecnologia para criar um projeto voltado à fé. O Ecce Homo une,
-            portanto, fé e tecnologia.
-          </p>
-          <div className="row g-3 align-items-center">
-            <div className="col-12 col-sm-4 col-lg-3">
-              <Placeholder texto="[PLACEHOLDER — LOGO JCruz SOLUÇÕES TECH]" />
-            </div>
-            <div className="col-12 col-sm-8 col-lg-9">
-              <h3 className="h6">JCruz Soluções Tech</h3>
-              <p className="small mb-3">
-                Espaço reservado para uma breve apresentação da JCruz Soluções
-                Tech, ligada ao desenvolvimento técnico do projeto.
-              </p>
-              <span
-                className="btn btn-outline-primary disabled"
-                aria-disabled="true"
-              >
-                Conheça nossos projetos
-              </span>
-            </div>
           </div>
         </section>
 
@@ -234,15 +165,10 @@ export default function PaginaSobre() {
             id="contato-titulo"
             className="h4 border-start border-primary border-3 ps-2"
           >
-            5. Como posso entrar em contato?
+            3. Como posso entrar em contato?
           </h2>
-          <p>
-            Para falar com o Ecce Homo, use o e-mail de contato. O endereço
-            definitivo ainda não foi definido.
-          </p>
-          <p className="border rounded bg-light p-3 mb-0">
-            [PLACEHOLDER — E-MAIL DE CONTATO]
-          </p>
+          <p>Para falar com o Ecce Homo, use o e-mail de contato.</p>
+          <CopiarContato />
         </section>
 
         <section className="container py-4">
@@ -250,10 +176,10 @@ export default function PaginaSobre() {
             aria-label="Informações da página"
             className="d-flex flex-wrap gap-3"
           >
-            <Link href="/404" className="link-secondary">
+            <Link href="/privacidade" className="link-secondary">
               Política de Privacidade
             </Link>
-            <Link href="/404" className="link-secondary">
+            <Link href="/termos-de-uso" className="link-secondary">
               Termos de Uso
             </Link>
           </nav>
