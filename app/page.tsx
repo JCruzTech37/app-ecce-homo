@@ -6,25 +6,22 @@ import { LogoMarca } from "@/components/LogoMarca";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { Rodape } from "@/components/Rodape";
-import { categoriaDestaque } from "@/domain/destaques";
-import {
-  listarOracoesEmDestaque,
-  listarOracoesRecentes,
-} from "@/domain/oracoes";
+import { categoriaDestaque, oracoesEmDestaque } from "@/domain/destaques";
+import { listarOracoesPublicadas } from "@/domain/oracoes";
+import { oracoesRecentes } from "@/domain/oracoesRecentes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 
 export default async function Home() {
-  const paraCarrossel = (
-    oracoes: Awaited<ReturnType<typeof listarOracoesRecentes>>,
-  ) =>
+  const publicadas = await listarOracoesPublicadas();
+  const paraCarrossel = (oracoes: typeof publicadas) =>
     oracoes.map((oracao) => ({
       slug: oracao.slug,
       titulo: oracao.titulo,
       descricao: oracao.descricao,
       tags: oracao.tags,
     }));
-  const destaques = paraCarrossel(await listarOracoesEmDestaque());
-  const recentes = paraCarrossel(await listarOracoesRecentes());
+  const destaques = paraCarrossel(oracoesEmDestaque(publicadas));
+  const recentes = paraCarrossel(oracoesRecentes(publicadas));
   return (
     <>
       <header className="border-bottom bg-white">

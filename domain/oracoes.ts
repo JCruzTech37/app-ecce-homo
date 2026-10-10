@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { oracoesEmDestaque, tagsEfetivas } from "@/domain/destaques";
 import { oracoesRecentes } from "@/domain/oracoesRecentes";
 import type { RepositorioOracoes } from "@/domain/repositorioOracoes";
@@ -22,11 +23,11 @@ export async function obterOracaoPorSlug(slug: string): Promise<Oracao | null> {
   return oracao ? aplicarDestaque(oracao) : null;
 }
 
-export async function listarOracoesPublicadas(): Promise<Oracao[]> {
+export const listarOracoesPublicadas = cache(async (): Promise<Oracao[]> => {
   const lista = await repositorio.listarPublicadas();
 
   return lista.map(aplicarDestaque);
-}
+});
 
 export async function listarOracoesEmDestaque(): Promise<Oracao[]> {
   return oracoesEmDestaque(await listarOracoesPublicadas());
