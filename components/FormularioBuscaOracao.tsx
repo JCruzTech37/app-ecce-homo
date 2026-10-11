@@ -2,6 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import type { FormEvent, KeyboardEvent } from "react";
+import {
+  hrefComListaOracoes,
+  rolarParaListaOracoes,
+} from "@/lib/ancoraListaOracoes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 
 export function FormularioBuscaOracao({
@@ -37,8 +41,13 @@ export function FormularioBuscaOracao({
   function pesquisar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     const dados = new FormData(evento.currentTarget);
-    const texto = String(dados.get("busca") ?? "").trim().slice(0, 50);
-    router.push(hrefOracoes({ busca: texto, ordem, categoria }));
+    const texto = String(dados.get("busca") ?? "")
+      .trim()
+      .slice(0, 50);
+    const href = hrefOracoes({ busca: texto, ordem, categoria });
+    const destino = hrefComListaOracoes(href);
+    router.push(destino, { scroll: !destino.includes("#") });
+    rolarParaListaOracoes();
   }
 
   return (

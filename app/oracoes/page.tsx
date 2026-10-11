@@ -9,6 +9,7 @@ import { PainelFiltrosOracoes } from "@/components/PainelFiltrosOracoes";
 import { categoriasPorQuantidade } from "@/domain/categoriasOracoes";
 import { categoriaDestaque, ehDestaque } from "@/domain/destaques";
 import { listarOracoesPublicadas } from "@/domain/oracoes";
+import { idListaOracoes } from "@/lib/ancoraListaOracoes";
 import { hrefOracao, hrefOracoes } from "@/lib/hrefOracoes";
 import type { Oracao } from "@/types/oracao";
 import { Rodape } from "@/components/Rodape";
@@ -103,8 +104,12 @@ function palavrasDaBusca(busca: string): string[] {
     .filter((palavra) => palavra.length > 0);
 }
 
-function relevancia(titulo: string, busca: string, palavras: string[]): number {
-  const tituloNormalizado = normalizar(titulo);
+function relevancia(
+  oracao: Oracao,
+  busca: string,
+  palavras: string[],
+): number {
+  const tituloNormalizado = normalizar(oracao.titulo);
 
   if (tituloNormalizado === normalizar(busca)) {
     return 0;
@@ -118,19 +123,29 @@ function relevancia(titulo: string, busca: string, palavras: string[]): number {
     return 2;
   }
 
-  return 3;
+  const categorias = oracao.tags.map(normalizar);
+  const naCategoria = (palavra: string) =>
+    categorias.some((tag) => tag.includes(palavra));
+
+  if (palavras.every(naCategoria)) {
+    return 3;
+  }
+
+  if (palavras.some(naCategoria)) {
+    return 4;
+  }
+
+  return 5;
 }
 
-function filtrarPorTitulo(lista: Oracao[], busca: string): Oracao[] {
+function filtrarPorBusca(lista: Oracao[], busca: string): Oracao[] {
   const palavras = palavrasDaBusca(busca);
 
   if (palavras.length === 0) {
     return lista;
   }
 
-  return lista.filter(
-    (oracao) => relevancia(oracao.titulo, busca, palavras) < 3,
-  );
+  return lista.filter((oracao) => relevancia(oracao, busca, palavras) < 5);
 }
 
 function ordenarBusca(
@@ -144,11 +159,9 @@ function ordenarBusca(
     return ordenarOracoes(lista, ordem);
   }
 
-  const grupos = [0, 1, 2].map((nivel) =>
+  const grupos = [0, 1, 2, 3, 4].map((nivel) =>
     ordenarOracoes(
-      lista.filter(
-        (oracao) => relevancia(oracao.titulo, busca, palavras) === nivel,
-      ),
+      lista.filter((oracao) => relevancia(oracao, busca, palavras) === nivel),
       ordem,
     ),
   );
@@ -166,17 +179,28 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
   const ordem = ordenacaoSolicitada(ordemInformada);
   const busca = (textoParametro(buscaInformada) ?? "").trim().slice(0, 50);
   const publicadas = await listarOracoesPublicadas();
-  const categorias = categoriasPorQuantidade(publicadas).filter(
+  const correspondentes = filtrarPorBusca(publicadas, busca);
+  const categoriasCatalogo = categoriasPorQuantidade(publicadas).filter(
     (item) => item.slug !== categoriaDestaque,
   );
-  const quantidadeDestaques = publicadas.filter(ehDestaque).length;
+  const quantidadesDaBusca = new Map(
+    categoriasPorQuantidade(correspondentes).map((item) => [
+      item.slug,
+      item.quantidade,
+    ]),
+  );
+  const categorias = categoriasCatalogo.map((item) => ({
+    slug: item.slug,
+    quantidade: quantidadesDaBusca.get(item.slug) ?? 0,
+  }));
+  const quantidadeDestaques = correspondentes.filter(ehDestaque).length;
   const categoriaSolicitada = (textoParametro(categoriaInformada) ?? "").trim();
   const categoria =
     categoriaSolicitada === categoriaDestaque ||
-    categorias.some((item) => item.slug === categoriaSolicitada)
+    categoriasCatalogo.some((item) => item.slug === categoriaSolicitada)
       ? categoriaSolicitada
       : "";
-  const encontradas = filtrarPorTitulo(publicadas, busca).filter((oracao) => {
+  const encontradas = correspondentes.filter((oracao) => {
     if (!categoria) {
       return true;
     }
@@ -300,7 +324,8 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
             </aside>
 
             <section
-              className="col-12 col-lg-9"
+              id={idListaOracoes}
+              className={`col-12 col-lg-9 ${styles.lista}`}
               aria-labelledby="titulo-listagem"
             >
               <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
@@ -326,7 +351,7 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
                   <div>
                     <p className="mb-1">Nenhuma oração encontrada</p>
                     <p className="text-secondary mb-0">
-                      Não encontramos nenhuma oração com esse título.
+                      Não encontramos nenhuma oração para essa busca.
                     </p>
                   </div>
                 ) : categoria ? (

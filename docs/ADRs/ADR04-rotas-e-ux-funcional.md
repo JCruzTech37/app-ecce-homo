@@ -111,6 +111,20 @@ A página poderá apresentar:
 
 Conteúdo não publicado não deve aparecer.
 
+A busca da listagem compara o texto informado com o título e, por último, com as categorias. Maiúsculas e acentos não distinguem o termo: `protecao`, `proteção` e `Proteção` equivalem.
+
+A ordem dos resultados, antes da ordenação escolhida pelo visitante, é:
+
+1. título idêntico ao texto buscado;
+2. título que contém todas as palavras;
+3. título que contém alguma palavra;
+4. categoria que contém todas as palavras;
+5. categoria que contém alguma palavra.
+
+Oração encontrada pelo título aparece antes de oração encontrada só pela categoria. Dentro de cada grupo vale a ordenação selecionada na página.
+
+O número exibido em cada categoria considera a busca ativa. Sem texto na busca, o número é o total de orações publicadas naquela categoria.
+
 ---
 
 ## 4.2 Oração individual — `/oracoes/[slug]`
@@ -270,7 +284,7 @@ Sobre
 
 A navegação deve permitir acesso direto às principais áreas do site.
 
-A pesquisa poderá existir visualmente no projeto, mas o mecanismo de busca não faz parte da primeira implementação funcional caso ainda não esteja implementado.
+A pesquisa da listagem de orações segue os critérios definidos na seção 4.1.
 
 Não haverá autenticação na navegação da V1.
 
