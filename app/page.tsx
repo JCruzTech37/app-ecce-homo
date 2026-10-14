@@ -11,6 +11,8 @@ import { listarOracoesPublicadas } from "@/domain/oracoes";
 import { oracoesRecentes } from "@/domain/oracoesRecentes";
 import { hrefOracoes } from "@/lib/hrefOracoes";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const publicadas = await listarOracoesPublicadas();
   const paraCarrossel = (oracoes: typeof publicadas) =>
