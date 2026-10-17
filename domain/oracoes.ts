@@ -20,13 +20,17 @@ function aplicarDestaque(oracao: Oracao): Oracao {
 export async function obterOracaoPorSlug(slug: string): Promise<Oracao | null> {
   const oracao = await repositorio.obterPorSlug(slug);
 
-  return oracao ? aplicarDestaque(oracao) : null;
+  if (!oracao || oracao.publicado !== true) {
+    return null;
+  }
+
+  return aplicarDestaque(oracao);
 }
 
 export const listarOracoesPublicadas = cache(async (): Promise<Oracao[]> => {
   const lista = await repositorio.listarPublicadas();
 
-  return lista.map(aplicarDestaque);
+  return lista.filter((oracao) => oracao.publicado).map(aplicarDestaque);
 });
 
 export async function listarOracoesEmDestaque(): Promise<Oracao[]> {

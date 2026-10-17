@@ -1,5 +1,15 @@
+import {
+  catalogoPublicadoEmCache,
+  ehSlugDeOracao,
+  oracaoPublicadaPorSlug,
+} from "@/lib/catalogo/catalogoPublicado";
 import type { RepositorioOracoes } from "@/domain/repositorioOracoes";
 import { obterFirestore } from "@/lib/firebase/admin";
+import {
+  consultaListarPublicadas,
+  executarConsultaFirestore,
+} from "@/lib/observabilidade/consultaFirestore";
+import { origemDaRequisicao } from "@/lib/observabilidade/origemRequisicao";
 import type { Oracao } from "@/types/oracao";
 
 function ehRegistro(valor: unknown): valor is Record<string, unknown> {
@@ -79,34 +89,42 @@ export function interpretarOracao(valor: unknown): Oracao {
   };
 }
 
+async function consultarCatalogoPublicado(): Promise<Oracao[]> {
+  return executarConsultaFirestore(
+    consultaListarPublicadas,
+    async (medicao) => {
+      const consulta = await obterFirestore()
+        .collection("prayers")
+        .where("publicado", "==", true)
+        .get();
+
+      medicao.documentos = consulta.size;
+
+      return consulta.docs
+        .map((documento) => interpretarOracao(documento.data()))
+        .filter((oracao) => oracao.publicado)
+        .sort((a, b) => a.slug.localeCompare(b.slug));
+    },
+    { origem: origemDaRequisicao },
+  );
+}
+
+const listarCatalogoEmCache = catalogoPublicadoEmCache(
+  consultarCatalogoPublicado,
+);
+
 export const repositorioOracoesFirestore: RepositorioOracoes = {
   async listarPublicadas() {
-    const consulta = await obterFirestore()
-      .collection("prayers")
-      .where("publicado", "==", true)
-      .get();
-
-    return consulta.docs
-      .map((documento) => interpretarOracao(documento.data()))
-      .sort((a, b) => a.slug.localeCompare(b.slug));
+    return listarCatalogoEmCache();
   },
 
   async obterPorSlug(slug) {
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    if (!ehSlugDeOracao(slug)) {
       return null;
     }
 
-    const consulta = await obterFirestore()
-      .collection("prayers")
-      .where("slug", "==", slug)
-      .limit(1)
-      .get();
+    const catalogo = await listarCatalogoEmCache();
 
-    const documento = consulta.docs[0];
-    if (!documento) {
-      return null;
-    }
-
-    return interpretarOracao(documento.data());
+    return oracaoPublicadaPorSlug(catalogo, slug);
   },
 };

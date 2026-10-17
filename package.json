@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "importar:oracoes": "node scripts/importar-oracoes-cli.cjs"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
