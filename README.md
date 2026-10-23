@@ -16,7 +16,7 @@ A importação é manual e não faz parte do funcionamento do site. Ela envia pa
 2. Execute:
 
 ```bash
-npm run importar:oracoes
+FIREBASE_PROJECT_ID=ecce-homo-d948d npm run importar:oracoes
 ```
 
 3. Confira o resumo: inseridos, ignorados por id, conflitos de slug e erros.

@@ -1,9 +1,16 @@
+export type ReferenciaOracao = {
+  icone?: string;
+  nome: string;
+  link: string;
+};
+
 export type Oracao = {
   id: string;
   slug: string;
   titulo: string;
   descricao?: string;
   texto: string;
+  referencia?: ReferenciaOracao;
   jaculatoria: string;
   fraseSanto?: string;
   fraseSantoAutor?: string;

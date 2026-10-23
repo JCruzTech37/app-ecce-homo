@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { obterFirestore } from "../lib/firebase/admin";
+import { validarReferencia } from "../lib/referenciaOracao";
 import { conteudoEditorial } from "./conteudoOracao";
 
 const diretorioPadrao = path.join(process.cwd(), "data", "prayers");
@@ -111,6 +112,8 @@ export function validarOracaoImportada(valor: unknown): string[] {
       erros.push(`${campo} deve ser texto`);
     }
   }
+
+  erros.push(...validarReferencia(valor.referencia));
 
   if (
     valor.fraseSanto === undefined &&

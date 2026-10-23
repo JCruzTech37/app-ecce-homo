@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { CompartilharOracao } from "@/components/CompartilharOracao";
+import { ReferenciaOracao } from "@/components/ReferenciaOracao";
 import { Jaculatoria } from "@/components/Jaculatoria";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
@@ -241,6 +242,9 @@ export default async function PaginaOracao(
               <div className="mb-4" style={{ whiteSpace: "pre-line" }}>
                 {oracao.texto}
               </div>
+              {oracao.referencia ? (
+                <ReferenciaOracao referencia={oracao.referencia} />
+              ) : null}
               <p className="fw-semibold mb-2">Compartilhar esta oração:</p>
               <CompartilharOracao titulo={oracao.titulo} texto={oracao.texto} />
               {oracao.tags.length > 0 ? (

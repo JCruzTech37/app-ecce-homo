@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { interpretarReferencia } from "@/lib/referenciaOracao";
 import type { Oracao } from "@/types/oracao";
 
 const slugValido = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -52,12 +53,21 @@ export function interpretarOracao(valor: unknown, slug: string): Oracao | null {
     return null;
   }
 
+  let referencia;
+
+  try {
+    referencia = interpretarReferencia(valor.referencia);
+  } catch {
+    return null;
+  }
+
   return {
     id: valor.id,
     slug,
     titulo: valor.titulo,
     descricao: texto(valor.descricao) ? valor.descricao : undefined,
     texto: valor.texto,
+    ...(referencia ? { referencia } : {}),
     jaculatoria: valor.jaculatoria,
     fraseSanto: texto(valor.fraseSanto) ? valor.fraseSanto : undefined,
     fraseSantoAutor: texto(valor.fraseSantoAutor)

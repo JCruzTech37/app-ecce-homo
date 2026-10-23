@@ -258,6 +258,49 @@ test("falha de criação não sobrescreve o documento", async () => {
   assert.equal(linhas.join("\n").includes("TEXTO_SECRETO"), false);
 });
 
+test("referencia opcional é gravada e tipo inválido interrompe a importação", async () => {
+  const referencia = {
+    icone: "instagram",
+    nome: "Instituto Hesed",
+    link: "https://exemplo.com",
+  };
+  const { banco, criados } = bancoControlado();
+  const relatorio = await importarOracoes({
+    arquivos: [arquivo("ave-maria.json", { referencia })],
+    banco,
+    agora,
+  });
+
+  assert.equal(relatorio.erros.length, 0);
+  assert.equal(relatorio.inseridos.length, 1);
+  assert.deepEqual(criados[0]?.dados.referencia, referencia);
+
+  const semReferencia = bancoControlado();
+  await importarOracoes({
+    arquivos: [arquivo("credo.json", { id: "credo", slug: "credo" })],
+    banco: semReferencia.banco,
+    agora,
+  });
+  assert.ok(semReferencia.criados[0]);
+  assert.equal("referencia" in semReferencia.criados[0].dados, false);
+
+  const { banco: bancoInvalido, operacoes } = bancoControlado();
+  await assert.rejects(
+    () =>
+      importarOracoes({
+        arquivos: [
+          arquivo("ave-maria.json", {
+            referencia: { nome: 1, link: "https://exemplo.com" },
+          }),
+        ],
+        banco: bancoInvalido,
+        agora,
+      }),
+    /referencia\.nome deve ser texto/,
+  );
+  assert.deepEqual(operacoes, []);
+});
+
 test("documento novo recebe datas do script e preserva campo legado", () => {
   const documento = montarDocumentoNovo(
     {

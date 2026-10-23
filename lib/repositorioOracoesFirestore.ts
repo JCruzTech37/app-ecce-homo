@@ -10,6 +10,7 @@ import {
   executarConsultaFirestore,
 } from "@/lib/observabilidade/consultaFirestore";
 import { origemDaRequisicao } from "@/lib/observabilidade/origemRequisicao";
+import { interpretarReferencia } from "@/lib/referenciaOracao";
 import type { Oracao } from "@/types/oracao";
 
 function ehRegistro(valor: unknown): valor is Record<string, unknown> {
@@ -70,12 +71,15 @@ export function interpretarOracao(valor: unknown): Oracao {
     throw new Error("Documento de oração inválido.");
   }
 
+  const referencia = interpretarReferencia(valor.referencia);
+
   return {
     id: valor.id,
     slug: valor.slug,
     titulo: valor.titulo,
     descricao: textoOpcional(valor.descricao, "descricao"),
     texto: valor.texto,
+    ...(referencia ? { referencia } : {}),
     jaculatoria: valor.jaculatoria,
     fraseSanto: textoOpcional(valor.fraseSanto, "fraseSanto"),
     fraseSantoAutor: textoOpcional(valor.fraseSantoAutor, "fraseSantoAutor"),
