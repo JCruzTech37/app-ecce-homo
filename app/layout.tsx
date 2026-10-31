@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { cinzel, sourceSans3 } from "./fontes";
@@ -16,7 +17,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${cinzel.variable} ${sourceSans3.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <GoogleAnalytics gaId="G-DF9TGJMXR9" />
+      </body>
     </html>
   );
 }
