@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { ambienteDeExecucao } from "@/lib/observabilidade/consultaFirestore";
 import { cinzel, sourceSans3 } from "./fontes";
 import "./tokens.css";
 import "./design.css";
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body>
         {children}
-        <GoogleAnalytics gaId="G-DF9TGJMXR9" />
+        {ambienteDeExecucao() === "production" ? (
+          <GoogleAnalytics gaId="G-DF9TGJMXR9" />
+        ) : null}
       </body>
     </html>
   );
