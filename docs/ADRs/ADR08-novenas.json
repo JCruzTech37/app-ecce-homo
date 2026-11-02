@@ -1,0 +1,94 @@
+{
+  "id": "nossa-senhora-exemplo",
+  "slug": "nossa-senhora-exemplo",
+  "titulo": "Novena de Exemplo",
+  "descricao": "Descrição da novena.",
+  "fraseSanto": "Frase relacionada à novena.",
+  "fraseSantoAutor": "Autor da frase",
+  "jaculatoria": "Jaculatória da novena.",
+  "publicado": false,
+  "createdAt": "2026-11-02T00:00:00.000Z",
+  "updatedAt": "2026-11-02T00:00:00.000Z",
+  "seoTitle": "Novena de Exemplo | Ecce Homo",
+  "seoDescription": "Descrição para mecanismos de busca.",
+  "tags": [
+    "exemplo",
+    "novena"
+  ],
+  "blocos": [
+    {
+      "id": "oracao-inicial",
+      "titulo": "Oração inicial",
+      "texto": "Texto da oração inicial compartilhada."
+    },
+    {
+      "id": "oracao-final",
+      "titulo": "Oração final",
+      "texto": "Texto da oração final compartilhada."
+    }
+  ],
+  "dias": [
+    {
+      "numero": 1,
+      "itens": [
+        {
+          "ordenacao": 1,
+          "is_bloco": true,
+          "id_bloco": "oracao-inicial"
+        },
+        {
+          "ordenacao": 2,
+          "is_bloco": false,
+          "titulo": "Meditação do primeiro dia",
+          "texto": "Texto meditativo específico do primeiro dia."
+        },
+        {
+          "ordenacao": 3,
+          "nome": "Pai-Nosso",
+          "id_oracao": "ID_DO_DOCUMENTO_DA_ORACAO"
+        },
+        {
+          "ordenacao": 4,
+          "is_bloco": true,
+          "id_bloco": "oracao-inicial"
+        },
+        {
+          "ordenacao": 5,
+          "is_bloco": true,
+          "id_bloco": "oracao-final"
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "itens": [
+        {
+          "ordenacao": 1,
+          "is_bloco": true,
+          "id_bloco": "oracao-inicial"
+        },
+        {
+          "ordenacao": 2,
+          "is_bloco": false,
+          "titulo": "Meditação do segundo dia",
+          "texto": "Texto meditativo específico do segundo dia."
+        },
+        {
+          "ordenacao": 3,
+          "nome": "Ave-Maria",
+          "id_oracao": "ID_DO_DOCUMENTO_DA_ORACAO"
+        },
+        {
+          "ordenacao": 4,
+          "is_bloco": true,
+          "id_bloco": "oracao-final"
+        }
+      ]
+    }
+  ],
+  "referencia": {
+    "link": "https://exemplo.com/fonte",
+    "nome": "Fonte de referência"
+  },
+  "is_destaque": false
+}
