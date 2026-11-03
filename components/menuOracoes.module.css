@@ -1,0 +1,27 @@
+.gatilho {
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.submenu {
+  --bs-dropdown-bg: var(--card-fundo);
+  --bs-dropdown-font-size: var(--tipo-texto-tamanho);
+  background-color: var(--card-fundo);
+  padding: var(--espaco-xs) 0;
+  min-width: 17rem;
+  font-family: var(--tipo-texto-fonte);
+  font-size: var(--tipo-texto-tamanho);
+  font-weight: var(--tipo-texto-peso);
+}
+
+.texto {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+.item {
+  background-color: var(--card-fundo);
+}

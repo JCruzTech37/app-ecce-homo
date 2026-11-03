@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import { Rodape } from "@/components/Rodape";
 
 export default function PaginaNaoEncontrada() {
@@ -22,12 +23,7 @@ export default function PaginaNaoEncontrada() {
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-secondary text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes />
               <Link
                 href="/sobre"
                 className="link-secondary text-decoration-none"

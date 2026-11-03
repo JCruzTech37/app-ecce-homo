@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CardOracao } from "@/components/CardOracao";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import styles from "./oracoes.module.css";
 import { OrdenacaoOracoes } from "@/components/OrdenacaoOracoes";
 import { PainelFiltrosOracoes } from "@/components/PainelFiltrosOracoes";
@@ -236,12 +237,7 @@ export default async function PaginaOracoes(props: PageProps<"/oracoes">) {
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-primary fw-semibold text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes destaque />
               <Link
                 href="/sobre"
                 className="link-secondary text-decoration-none"

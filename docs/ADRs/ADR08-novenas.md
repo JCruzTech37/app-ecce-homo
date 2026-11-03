@@ -101,10 +101,26 @@ Cada objeto de `dias` contém `numero` e `itens`, conforme a seção 2.3.
 
 Campos opcionais:
 
-  Campo           Tipo
-  --------------- -------------------------------------------
-  `referencia`    objeto com `link` (URL) e `nome` (string)
-  `is_destaque`   boolean
+  Campo                   Tipo
+  ----------------------- -------------------------------------------
+  `referencia`            objeto com `link` (URL) e `nome` (string)
+  `is_destaque`           boolean
+  `sugestaoDataInicio`    date (`yyyy-mm-dd`)
+  `dataComemoracao`       date (`yyyy-mm-dd`)
+
+A novena pode informar uma sugestão de data para ser realizada. Isso
+ajuda o usuário a relacionar a novena com alguma data que se comemora.
+
+`sugestaoDataInicio` é a data sugerida para iniciar a novena.
+`dataComemoracao` é a data comemorada à qual a novena se relaciona. As
+duas usam o formato `yyyy-mm-dd`.
+
+Exemplo: o dia de Nossa Senhora Aparecida é 12 de outubro
+(`dataComemoracao`: `2026-10-12`). A sugestão é iniciar a novena em 3 de
+outubro (`sugestaoDataInicio`: `2026-10-03`).
+
+Quando presentes, essas datas serão exibidas na página da novena. Se
+não estiverem nos dados, não serão exibidas.
 
 ### 2.5. Evolução do modelo
 
@@ -153,13 +169,31 @@ Componentes existentes poderão ser reutilizados quando isso for simples
 e não introduzir complexidade desnecessária. Se a reutilização tornar a
 solução complexa, a duplicação será aceita.
 
-No menu do header, a opção **Orações** deverá oferecer um submenu com
-acesso a **Orações** e **Novenas**.
+No menu do header, a opção **Orações** abre um submenu e não
+redireciona para `/oracoes`. O submenu tem:
+
+-   **Lista de orações** — `/oracoes`.
+-   **Novenas** — `/novenas`.
+
+O item do submenu que corresponde à página atual recebe o destaque da
+lista de Categorias: linha vertical na cor vinho, fundo claro e a cor de
+texto desse estado. Os demais itens usam o fundo e a linha das categorias
+sem destaque. O texto do submenu usa o mesmo tamanho da lista de
+Categorias. O item **Orações** do header mantém o destaque que já tinha.
+
+A rota `/novenas` já existe. Nesta etapa a página traz o topo e o rodapé
+padrão do portal, sem a listagem. A busca, os filtros e o conteúdo da
+página central serão implementados depois, conforme esta seção.
+
+O rodapé não faz parte desse submenu e continua apontando **Orações**
+para `/oracoes`.
 
 Na página individual da novena: - O primeiro dia será selecionado por
 padrão. - A navegação pelo conteúdo do dia ocorrerá por rolagem dentro
 da própria página. - Os demais dias serão acessados por tabs, com uma
-tab para cada dia. - A troca de dia ocorrerá na própria página.
+tab para cada dia. - A troca de dia ocorrerá na própria página. - As
+datas `sugestaoDataInicio` e `dataComemoracao`, quando presentes, serão
+exibidas ao usuário.
 
 As tabs serão implementadas inicialmente de forma simples. Melhorias
 poderão ser feitas posteriormente, respeitando os padrões existentes no

@@ -5,6 +5,7 @@ import { CitacaoBiblica } from "@/components/CitacaoBiblica";
 import { CopiarContato } from "@/components/CopiarContato";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import { Rodape } from "@/components/Rodape";
 import stylesBomJesus from "@/app/sobre/imagemBomJesus.module.css";
 
@@ -26,12 +27,7 @@ export default function PaginaSobre() {
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-secondary text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes />
               <Link
                 href="/sobre"
                 className="link-primary fw-semibold text-decoration-none"

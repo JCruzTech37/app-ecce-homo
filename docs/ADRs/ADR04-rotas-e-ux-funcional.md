@@ -219,6 +219,8 @@ Exemplos:
 
 Listagem pública de novenas.
 
+O acesso a essa listagem, no header, fica no submenu de Orações, conforme o ADR08. Enquanto a listagem não for implementada, `/novenas` permanece uma página vazia, sem o menu do portal.
+
 ## 6.2 `/novenas/[slug]`
 
 Página principal da novena.
@@ -278,9 +280,19 @@ A navegação principal da V1 terá, no mínimo:
 ```text
 Início
 Orações
-Novenas
 Sobre
 ```
+
+**Orações** não leva diretamente a `/oracoes`. O clique abre um submenu com:
+
+```text
+Lista de orações    /oracoes
+Novenas             /novenas
+```
+
+Novenas não é um item ao lado de Orações. O acesso fica nesse submenu do header. O detalhe está no ADR08.
+
+O rodapé mantém o atalho direto **Orações** para `/oracoes`.
 
 A navegação deve permitir acesso direto às principais áreas do site.
 

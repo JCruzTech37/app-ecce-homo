@@ -3,6 +3,7 @@ import Link from "next/link";
 import bannerInferior from "@/app/bannerInferior.module.css";
 import { CarrosselBannerInicial } from "@/components/CarrosselBannerInicial";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import { CarrosselOracoesRelacionadas } from "@/components/CarrosselOracoesRelacionadas";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { Rodape } from "@/components/Rodape";
@@ -45,12 +46,7 @@ export default async function Home() {
               >
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-secondary text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes />
               <Link
                 href="/sobre"
                 className="link-secondary text-decoration-none"

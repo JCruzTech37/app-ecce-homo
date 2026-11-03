@@ -6,6 +6,7 @@ import { ReferenciaOracao } from "@/components/ReferenciaOracao";
 import { Jaculatoria } from "@/components/Jaculatoria";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import {
   categoriasPorQuantidade,
   categoriasSugeridas,
@@ -124,12 +125,7 @@ export default async function PaginaOracao(
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-primary fw-semibold text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes destaque />
               <Link
                 href="/sobre"
                 className="link-secondary text-decoration-none"

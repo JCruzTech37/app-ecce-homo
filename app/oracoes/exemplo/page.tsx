@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FormularioBuscaOracao } from "@/components/FormularioBuscaOracao";
 import { Jaculatoria } from "@/components/Jaculatoria";
 import { LogoMarca } from "@/components/LogoMarca";
+import { MenuOracoes } from "@/components/MenuOracoes";
 import { Rodape } from "@/components/Rodape";
 
 // !!! ESTÁTICO — futuramente virá do domínio/repository !!!
@@ -56,12 +57,7 @@ export default function PaginaOracaoExemplo() {
               <Link href="/" className="link-secondary text-decoration-none">
                 Início
               </Link>
-              <Link
-                href="/oracoes"
-                className="link-primary fw-semibold text-decoration-none"
-              >
-                Orações
-              </Link>
+              <MenuOracoes destaque />
               <Link
                 href="/sobre"
                 className="link-secondary text-decoration-none"
